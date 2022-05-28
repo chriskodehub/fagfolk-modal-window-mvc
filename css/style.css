@@ -1,0 +1,23 @@
+body {
+margin:0;
+    height: 100vh;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container:before {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    background-image: url("../img/background2.jpg");
+}
+

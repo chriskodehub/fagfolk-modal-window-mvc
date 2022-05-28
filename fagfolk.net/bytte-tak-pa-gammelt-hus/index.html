@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="nb-NO" dir="ltr">
+                <head><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(e){this.triggerEvents=e,this.eventOptions={passive:!0},this.userEventListener=this.triggerListener.bind(this),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventListener,e.eventOptions)))}_removeUserInteractionListener(e){this.triggerEvents.forEach((t=>window.removeEventListener(t,e.userEventListener,e.eventOptions)))}triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}async _loadEverythingNow(){this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async),await this._triggerDOMContentLoaded(),await this._triggerWindowLoad(),window.dispatchEvent(new Event("rocket-allScriptsLoaded"))}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._requestAnimFrame(),new Promise((t=>{const n=document.createElement("script");let r;[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type",r=e.nodeValue),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){var e=document.createDocumentFragment();[...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async].forEach((t=>{const n=t.getAttribute("src");if(n){const t=document.createElement("link");t.href=n,t.rel="preload",t.as="script",e.appendChild(t)}})),document.head.appendChild(e)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(r){e["rocket"+t]=n=r}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._requestAnimFrame(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-load")),await this._requestAnimFrame(),window.rocketonload&&window.rocketonload(),await this._requestAnimFrame(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),window.dispatchEvent(new Event("rocket-pageshow")),await this._requestAnimFrame(),window.rocketonpageshow&&window.rocketonpageshow()}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,r=document.createRange(),i=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const a=document.createDocumentFragment();r.setStart(a,0),a.appendChild(r.createContextualFragment(t)),i.insertBefore(a,o)}}async _requestAnimFrame(){return new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts(["keydown","mousemove","touchmove","touchstart","touchend","wheel"]);e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();
+</script>
+    
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+
+        
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="profile" href="http://gmpg.org/xfn/11" />
+    <link rel="pingback" href="https://fagfolk.net/xmlrpc.php" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v18.9 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Bytte tak på gammelt hus - Fagfolk.net</title><style id="rocket-critical-css">.g-main-nav ul{margin:0;padding:0;list-style:none}@-webkit-viewport{width:device-width}@-moz-viewport{width:device-width}@-ms-viewport{width:device-width}@-o-viewport{width:device-width}@viewport{width:device-width}html{height:100%;font-size:100%;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;box-sizing:border-box}*,*::before,*::after{box-sizing:inherit}body{margin:0}#g-page-surround{min-height:100vh;position:relative;overflow:hidden}article,main,nav,section{display:block}a{background:transparent;text-decoration:none}img{width:auto\9;height:auto;max-width:100%;display:inline-block;vertical-align:middle;border:0;-ms-interpolation-mode:bicubic}svg{max-width:100%}svg:not(:root){overflow:hidden}input{color:inherit;font:inherit;margin:0}input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}.g-grid{display:-webkit-box;display:-moz-box;display:box;display:-webkit-flex;display:-moz-flex;display:-ms-flexbox;display:flex;-webkit-flex-flow:row wrap;-moz-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0;padding:0;text-rendering:optimizespeed}.g-block{-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;-webkit-flex:1;-moz-flex:1;-ms-flex:1;flex:1;min-width:0;min-height:0}.size-15{-webkit-box-flex:0;-moz-box-flex:0;box-flex:0;-webkit-flex:0 15%;-moz-flex:0 15%;-ms-flex:0 15%;flex:0 15%;width:15%}.size-70{-webkit-box-flex:0;-moz-box-flex:0;box-flex:0;-webkit-flex:0 70%;-moz-flex:0 70%;-ms-flex:0 70%;flex:0 70%;width:70%}.size-100{width:100%;max-width:100%;-webkit-flex-grow:0;-moz-flex-grow:0;flex-grow:0;-ms-flex-positive:0;-webkit-flex-basis:100%;-moz-flex-basis:100%;flex-basis:100%;-ms-flex-preferred-size:100%}.g-main-nav .g-toplevel>li{display:inline-block}.g-main-nav .g-toplevel>li .g-menu-item-content{display:inline-block;vertical-align:middle}.g-menu-item-container{display:block;position:relative}.g-main-nav .g-standard{position:relative}h2{margin:0.75rem 0 1.5rem 0;text-rendering:optimizeLegibility}ul{margin-top:1.5rem;margin-bottom:1.5rem}ul{margin-left:1.5rem;padding:0}body .g-offcanvas-hide{display:none}.center{text-align:center!important}.align-right{text-align:right!important}.nopaddingleft{padding-left:0!important}.nopaddingleft .g-content{padding-left:0!important}.nopaddingright{padding-right:0!important}.nopaddingright .g-content{padding-right:0!important}#g-offcanvas{position:fixed;top:0;left:0;right:0;bottom:0;overflow-x:hidden;overflow-y:auto;text-align:left;display:none;-webkit-overflow-scrolling:touch}.g-offcanvas-toggle{display:block;position:absolute;top:0.7rem;left:0.7rem;z-index:10;line-height:1}.g-offcanvas-left #g-page-surround{left:0}.g-offcanvas-left #g-offcanvas{right:inherit}.g-content{margin:0.625rem;padding:1.5rem}body{font-size:1rem;line-height:1.5}h2{font-size:2rem}.nopaddingleft,.nopaddingleft>.g-content{padding-left:0}.nopaddingright,.nopaddingright>.g-content{padding-right:0}.section-horizontal-paddings{padding-left:10%;padding-right:10%}@media only all and (min-width:51rem) and (max-width:75.99rem){.section-horizontal-paddings{padding-left:0;padding-right:0}}@media only all and (max-width:50.99rem){.section-horizontal-paddings{padding-left:0;padding-right:0}}html body{position:relative;color:#030303;background:#fff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}html body #g-page-surround{background-color:#fff;background-image:url(../wp-content/themes/rt_akuatik/images/backgrounds/body/bg-01.svg@60eb4dca);background-repeat:repeat-y;background-position:top}@media only all and (max-width:50.99rem){html body #g-page-surround{padding:0}}.g-logo{font-weight:900;font-size:2vw;box-shadow:none!important}@media (max-width:75rem){.g-logo{font-size:1.5rem}}@media only all and (min-width:51rem) and (max-width:75.99rem){.g-logo{padding-left:1.25rem}}@media only all and (max-width:50.99rem){.g-logo{text-align:center;display:block;position:relative;z-index:1}}.g-main-nav .g-toplevel>li>.g-menu-item-container{padding:0.625rem 0.775rem;font-size:1vw;font-weight:400;letter-spacing:1px;line-height:1;white-space:normal;overflow-wrap:break-word;word-wrap:break-word;word-break:break-all}@media (max-width:100rem){.g-main-nav .g-toplevel>li>.g-menu-item-container{font-size:1rem}}.g-main-nav{z-index:20;background:rgba(255,255,255,0)}@media only all and (min-width:76rem) and (max-width:87.99rem){.g-main-nav{white-space:nowrap}}.g-main-nav .g-toplevel>li>.g-menu-item-container{position:relative;top:0}@media only all and (min-width:51rem) and (max-width:75.99rem){.g-main-nav .g-toplevel>li>.g-menu-item-container{padding:0.625rem 0.35rem}}#g-navigation .g-main-nav .g-toplevel>li>.g-menu-item-container{color:#07102a}.g-main-nav .g-toplevel>li>.g-menu-item-container>.g-menu-item-content{word-break:normal;line-height:normal}a{color:#4875ff}@font-face{font-display:swap;font-family:"chivo";font-style:normal;font-weight:400;src:url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-regular.eot@60eb4da5) format("embedded-opentype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-regular.woff2@60eb4da6) format("woff2"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-regular.woff@60eb4da6) format("woff"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-regular.ttf@60eb4da5) format("truetype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-regular.svg@60eb4da6) format("svg")}@font-face{font-display:swap;font-family:"chivo";font-style:normal;font-weight:300;src:url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-300.eot@60eb4da6) format("embedded-opentype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-300.woff2@60eb4da5) format("woff2"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-300.woff@60eb4da5) format("woff"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-300.ttf@60eb4da5) format("truetype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-300.svg@60eb4da5) format("svg")}@font-face{font-display:swap;font-family:"chivo";font-style:normal;font-weight:700;src:url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-700.eot@60eb4da6) format("embedded-opentype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-700.woff2@60eb4da7) format("woff2"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-700.woff@60eb4da5) format("woff"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-700.ttf@60eb4da6) format("truetype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-700.svg@60eb4da7) format("svg")}@font-face{font-display:swap;font-family:"chivo";font-style:normal;font-weight:900;src:url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-900.eot@60eb4da6) format("embedded-opentype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-900.woff2@60eb4da6) format("woff2"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-900.woff@60eb4da5) format("woff"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-900.ttf@60eb4da6) format("truetype"),url(../wp-content/themes/rt_akuatik/fonts/chivo/chivo-v11-latin_latin-ext-900.svg@60eb4da7) format("svg")}body{font-family:"chivo","Helvetica","Tahoma","Geneva","Arial",sans-serif;font-weight:400}h2{font-family:"chivo","Helvetica","Tahoma","Geneva","Arial",sans-serif;font-weight:700;margin:1.5rem 0 0.75rem 0}h2{font-size:2rem;font-weight:700}.g-simplecontent .g-simplecontent-item-leading-content{position:relative;font-weight:600;font-size:1.5rem;line-height:1.35;margin:1.25rem 0 0.625rem 0}.platform-content{margin:0.625rem 0;padding:1.5rem 0}.platform-content:first-child{margin-top:0;padding-top:0}.platform-content:last-child{margin-bottom:0;padding-bottom:0}.button{display:inline-block;font-family:"chivo","Helvetica","Tahoma","Geneva","Arial",sans-serif;font-weight:700;color:#fff;font-size:0.8vw;background:#4875ff;text-align:center;margin:0 0 0.5rem 0;padding:0.4rem 1.5rem;padding-bottom:0.45rem;border-radius:0.4rem;border:2px solid transparent;vertical-align:middle;text-shadow:none}@media (max-width:125rem){.button{font-size:1rem}}#g-top{color:#07102a;background:rgba(255,255,255,0)}#g-slideshow{color:#07102a;background-color:rgba(255,255,255,0)}#g-slideshow .g-simplecontent-item-content-title{font-weight:700}#g-slideshow .g-simplecontent-item-leading-content{color:#fff;margin-top:0;opacity:0.5}#g-slideshow .blobs{padding:1.5rem}#g-slideshow .blobs .g-content{background-image:url(../wp-content/themes/rt_akuatik/images/backgrounds/slideshow/bg-elements.svg@60eb4dc9);background-size:cover;background-position:center;border-radius:1rem;-webkit-backface-visibility:hidden;backface-visibility:hidden}.tilt #g-slideshow .blobs .g-content{transform:rotate(-1deg)}#g-navigation{color:#07102a;background:rgba(255,255,255,0)}#g-navigation a:not(.button){color:#07102a}#g-navigation .g-grid{-webkit-box-align:center;-moz-box-align:center;box-align:center;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;-ms-flex-align:center}#g-container-main{background:rgba(255,255,255,0);color:#07102a}#g-offcanvas{background:#4875ff;width:13rem;color:#fff}.g-offcanvas-toggle{display:none;font-size:1.5rem;background:transparent;color:#07102a;width:40px;height:40px;line-height:24px;text-align:center;top:2.5rem;left:1.1rem;z-index:10001;direction:ltr}@media only all and (max-width:51rem){.g-offcanvas-toggle{display:block}}#g-offcanvas{padding-left:1.5rem}#g-offcanvas #g-mobilemenu-container{font-family:"chivo","Helvetica","Tahoma","Geneva","Arial",sans-serif;font-weight:bold;margin-top:0.625rem;margin-bottom:0.625rem;margin-left:-50%}#g-mobilemenu-container{margin:-2.125rem}.g-content{margin:0.625rem;padding:1.5rem}body{font-size:1rem;line-height:1.5}h2{font-size:2rem}.g-simplecontent .g-simplecontent-layout-header{width:50%;padding:4.5rem 0;padding-bottom:0}@media only all and (max-width:50.99rem){.g-simplecontent .g-simplecontent-layout-header{width:100%}}.g-simplecontent .g-simplecontent-layout-header .g-simplecontent-item-content-title{font-size:3.5vw;display:inline-block;padding:0.625rem;font-weight:500;margin:0;color:#fff;border-radius:5px}@media (max-width:65.7142857143rem){.g-simplecontent .g-simplecontent-layout-header .g-simplecontent-item-content-title{font-size:2.3rem}}.g-simplecontent .g-simplecontent-layout-header .g-simplecontent-item-leading-content{padding:0.525rem;line-height:1.7;border-radius:5px}@media only all and (max-width:50.99rem){.g-simplecontent .g-simplecontent-layout-header .g-simplecontent-item-leading-content{width:100%}}@media only all and (min-width:51rem) and (max-width:75.99rem){.g-simplecontent .g-simplecontent-layout-header{padding:0}}@media only all and (max-width:50.99rem){.g-simplecontent .g-simplecontent-layout-header{padding:0;text-align:center}}.g-simplecontent .g-simplecontent-item-content-title{font-size:1.2vw;margin:0.525rem 0;font-weight:600;line-height:1}@media (max-width:100rem){.g-simplecontent .g-simplecontent-item-content-title{font-size:1.2rem}}.g-simplecontent .g-simplecontent-item-leading-content{margin-bottom:0.625rem;font-weight:400;font-size:1vw}@media (max-width:100rem){.g-simplecontent .g-simplecontent-item-leading-content{font-size:1rem}}.g-particlesjs{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}.g-button{white-space:nowrap}@media only all and (max-width:50.99rem){.g-button{text-align:center}}@media only all and (min-width:51rem) and (max-width:75.99rem){.g-button{margin-left:-4rem}}.g-button a{margin:0}@media only all and (max-width:50.99rem){.g-block{-webkit-flex-grow:0;-moz-flex-grow:0;flex-grow:0;-ms-flex-positive:0;-webkit-flex-basis:100%;-moz-flex-basis:100%;flex-basis:100%;-ms-flex-preferred-size:100%}}@media only all and (max-width:50.99rem){body [class*="size-"]{-webkit-flex-grow:0;-moz-flex-grow:0;flex-grow:0;-ms-flex-positive:0;-webkit-flex-basis:100%;-moz-flex-basis:100%;flex-basis:100%;-ms-flex-preferred-size:100%;max-width:100%}}@media only all and (max-width:50.99rem){@supports not (flex-wrap:wrap){.g-grid{display:block;-webkit-box-lines:inherit;-moz-box-lines:inherit;box-lines:inherit;-webkit-flex-wrap:inherit;-moz-flex-wrap:inherit;-ms-flex-wrap:inherit;flex-wrap:inherit}.g-block{display:block;-webkit-box-flex:inherit;-moz-box-flex:inherit;box-flex:inherit;-webkit-flex:inherit;-moz-flex:inherit;-ms-flex:inherit;flex:inherit}}}@media only all and (max-width:50.99rem){.align-right{text-align:inherit!important}}.platform-content .post-thumbnail{display:block;margin:0.65rem 0;min-width:0;min-height:0}.g-content{margin:0.625rem;padding:1.5rem}body{font-size:1rem;line-height:1.5}h2{font-size:2rem}#g-page-surround .page-header{margin:0.3125rem 0;font-size:1.5rem;font-weight:300}#g-page-surround .page-header h2{font-size:2.3rem;font-weight:400;line-height:4.5rem;margin-top:2rem;margin-bottom:0.625rem;padding-bottom:1.5rem}#g-page-surround .page-header h2 a{color:#030303}@media only all and (min-width:76rem) and (max-width:87.99rem){#g-page-surround .page-header h2{font-size:2.25rem}}@media only all and (min-width:51rem) and (max-width:75.99rem){#g-page-surround .page-header h2{font-size:2rem;line-height:1.6}}@media only all and (max-width:50.99rem){#g-page-surround .page-header h2{font-size:1.8rem;line-height:1.7}}#comments #respond input{padding-left:15px;border:0 none;border:2px solid #e7e8ea;background:#fff;border-radius:4px}.g-offcanvas-toggle{top:1rem;left:0.5rem}article,main,nav,section{display:block}img{border:0}svg:not(:root){overflow:hidden}.g-grid{letter-spacing:-0.31em}.g-block{display:inline-block;letter-spacing:normal;zoom:1;vertical-align:top}#g-offcanvas{display:none!important;visibility:hidden!important;width:0!important;height:0!important;position:static!important}[data-offcanvas-toggle]{display:none}</style><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" media="print" onload="this.media='all'" /><noscript><link rel="preload" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" /></noscript>
+	<meta name="description" content="Å bytte tak på gammelt hus kan være en av de bedre, men også en av de dyrere investeringer du gjør for huset ditt. Bruk fagfolk!" />
+	<link rel="canonical" href="../index.html@p=246.html" />
+	<meta property="og:locale" content="nb_NO" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Bytte tak på gammelt hus - Fagfolk.net" />
+	<meta property="og:description" content="Å bytte tak på gammelt hus kan være en av de bedre, men også en av de dyrere investeringer du gjør for huset ditt. Bruk fagfolk!" />
+	<meta property="og:url" content="https://fagfolk.net/bytte-tak-pa-gammelt-hus/" />
+	<meta property="og:site_name" content="Fagfolk.net" />
+	<meta property="article:published_time" content="2021-08-27T12:57:31+00:00" />
+	<meta property="article:modified_time" content="2022-03-20T20:22:46+00:00" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://fagfolk.net/wp-content/uploads/2021/08/tommerhus-tak.webp" />
+	<meta name="twitter:label1" content="Skrevet av" />
+	<meta name="twitter:data1" content="Bjørn Simonsen" />
+	<meta name="twitter:label2" content="Ansl. lesetid" />
+	<meta name="twitter:data2" content="10 minutter" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://fagfolk.net/#website","url":"https://fagfolk.net/","name":"Fagfolk.net","description":"Designed by RocketTheme","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://fagfolk.net/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"nb-NO"},{"@type":"ImageObject","inLanguage":"nb-NO","@id":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/#primaryimage","url":"https://fagfolk.net/wp-content/uploads/2021/08/tommerhus-tak.webp","contentUrl":"https://fagfolk.net/wp-content/uploads/2021/08/tommerhus-tak.webp","width":512,"height":352,"caption":"Bytte tak på gammelt hus"},{"@type":"WebPage","@id":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/#webpage","url":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/","name":"Bytte tak på gammelt hus - Fagfolk.net","isPartOf":{"@id":"https://fagfolk.net/#website"},"primaryImageOfPage":{"@id":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/#primaryimage"},"datePublished":"2021-08-27T12:57:31+00:00","dateModified":"2022-03-20T20:22:46+00:00","author":{"@id":"https://fagfolk.net/#/schema/person/944c1cb860b79732070d11390542cd55"},"description":"Å bytte tak på gammelt hus kan være en av de bedre, men også en av de dyrere investeringer du gjør for huset ditt. Bruk fagfolk!","breadcrumb":{"@id":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/#breadcrumb"},"inLanguage":"nb-NO","potentialAction":[{"@type":"ReadAction","target":["https://fagfolk.net/bytte-tak-pa-gammelt-hus/"]}]},{"@type":"BreadcrumbList","@id":"https://fagfolk.net/bytte-tak-pa-gammelt-hus/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Hjem","item":"https://fagfolk.net/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://fagfolk.net/blog/"},{"@type":"ListItem","position":3,"name":"Bytte tak på gammelt hus"}]},{"@type":"Person","@id":"https://fagfolk.net/#/schema/person/944c1cb860b79732070d11390542cd55","name":"Bjørn Simonsen","image":{"@type":"ImageObject","inLanguage":"nb-NO","@id":"https://fagfolk.net/#/schema/person/image/","url":"https://secure.gravatar.com/avatar/c6e7ce2c53b1fbfb01fce3bafb220e94?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/c6e7ce2c53b1fbfb01fce3bafb220e94?s=96&d=mm&r=g","caption":"Bjørn Simonsen"},"url":"https://fagfolk.net/author/bjorn/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Fagfolk.net &raquo; Bytte tak på gammelt hus kommentarstrøm" href="feed/index.html" />
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='preload'   href='../wp-includes/css/dist/block-library/style.min.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/contact-form-7/includes/css/styles.css@ver=5.5.6.1.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/ajax-search-lite/css/style.basic.css@ver=4.10.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/ajax-search-lite/css/style-curvy-red.css@ver=4.10.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/gantry5/engines/nucleus/css-compiled/nucleus.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/themes/rt_akuatik/custom/css-compiled/akuatik_bloggartikler.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/gantry5/engines/nucleus/css-compiled/wordpress.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/themes/rt_akuatik/style.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/gantry5/assets/css/font-awesome5-all.min.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/plugins/gantry5/assets/css/font-awesome5-shim.min.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/themes/rt_akuatik/custom/css-compiled/akuatik-wordpress_bloggartikler.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<link rel='preload'   href='../wp-content/themes/rt_akuatik/custom/css-compiled/custom_bloggartikler.css@ver=5.8.4.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='../wp-includes/js/jquery/jquery.min.js@ver=3.6.0' id='jquery-core-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js@ver=3.3.2' id='jquery-migrate-js' defer></script>
+<link rel="https://api.w.org/" href="../wp-json/index.html" /><link rel="alternate" type="application/json" href="../wp-json/wp/v2/posts/246" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php@rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.8.4" />
+<link rel='shortlink' href='../index.html@p=246.html' />
+<link rel="alternate" type="application/json+oembed" href="../wp-json/oembed/1.0/embed@url=https%253A%252F%252Ffagfolk.net%252Fbytte-tak-pa-gammelt-hus%252F" />
+<link rel="alternate" type="text/xml+oembed" href="../wp-json/oembed/1.0/embed@url=https%253A%252F%252Ffagfolk.net%252Fbytte-tak-pa-gammelt-hus%252F&amp;format=xml" />
+
+		<!-- GA Google Analytics @ https://m0n.co/ga -->
+		<script type="rocketlazyloadscript" async src="https://www.googletagmanager.com/gtag/js?id=G-E3GX5VTQ22"></script>
+		<script type="rocketlazyloadscript">
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-E3GX5VTQ22');
+		</script>
+
+	<script type="application/ld+json">
+{ "@context" : "http://schema.org",
+"@type" : "Organization",
+"name" : "Fagfolk",
+"url" : "https://fagfolk.net",
+"sameAs" : [
+"https://www.facebook.com/Fagfolk-466943003757795"],
+"logo" :
+"https://fagfolk.net/wp-content/uploads/2021/08/fagfolk-logo.jpg",
+"additionalType" :
+"http://www.productontology.org/id/Tradesman",
+"contactPoint" : [
+{ "@type" : "ContactPoint",
+"telephone" : "+47-99038002",
+"email" : "hei@fagfolk.net",
+"contactType" : "customer service",
+"availableLanguage" : ["Norwegian","English"]
+} ] }
+</script>		<script>
+			document.documentElement.className = document.documentElement.className.replace( 'no-js', 'js' );
+		</script>
+				<style>
+			.no-js img.lazyload { display: none; }
+			figure.wp-block-image img.lazyloading { min-width: 150px; }
+							.lazyload, .lazyloading { opacity: 0; }
+				.lazyloaded {
+					opacity: 1;
+					transition: opacity 400ms;
+					transition-delay: 0ms;
+				}
+					</style>
+						<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				
+				
+				                <style>
+                    
+					div[id*='ajaxsearchlitesettings'].searchsettings .asl_option_inner label {
+						font-size: 0px !important;
+						color: rgba(0, 0, 0, 0);
+					}
+					div[id*='ajaxsearchlitesettings'].searchsettings .asl_option_inner label:after {
+						font-size: 11px !important;
+						position: absolute;
+						top: 0;
+						left: 0;
+						z-index: 1;
+					}
+					.asl_w_container {
+						width: 100%;
+						margin: 0px 0px 0px 0px;
+					}
+					div[id*='ajaxsearchlite'].asl_m {
+						width: 100%;
+					}
+					div[id*='ajaxsearchliteres'].wpdreams_asl_results div.resdrg span.highlighted {
+						font-weight: bold;
+						color: rgb(217, 49, 43);
+						background-color: rgba(238, 238, 238, 1);
+					}
+					div[id*='ajaxsearchliteres'].wpdreams_asl_results .results div.asl_image {
+						width: 70px;
+						height: 70px;
+						background-size: cover;
+						background-repeat: no-repeat;
+					}
+					div.asl_r .results {
+						max-height: 100;
+					}
+				
+						div.asl_r.asl_w.vertical .results .item::after {
+							display: block;
+							position: absolute;
+							bottom: 0;
+							content: '';
+							height: 1px;
+							width: 100%;
+							background: #D8D8D8;
+						}
+						div.asl_r.asl_w.vertical .results .item.asl_last_item::after {
+							display: none;
+						}
+					body span.asl_single_highlighted {
+						display: inline !important;
+						color: rgba(217, 49, 43, 1) !important;
+						background-color: rgba(238, 238, 238, 1) !important;
+					}                </style>
+                <script type="rocketlazyloadscript">
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
+</script>
+                
+</head>
+
+    
+    <body class="gantry tilt g-offcanvas-left g-default g-style- post-template-default single single-post postid-246 single-format-standard site outline-bloggartikler dir-ltr">
+        
+                    
+
+        <div id="g-offcanvas"  data-g-offcanvas-swipe="0" data-g-offcanvas-css3="1">
+                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="mobile-menu-1286-particle" class="g-content g-particle">            <div id="g-mobilemenu-container" data-g-menu-breakpoint="51rem"></div>
+            </div>
+        </div>
+            </div>
+    </div>
+        <div id="g-page-surround">
+            <div class="g-offcanvas-hide g-offcanvas-toggle" role="navigation" data-offcanvas-toggle aria-controls="g-offcanvas" aria-expanded="false"><i class="fa fa-fw fa-bars"></i></div>                        
+
+                                
+                <section id="g-top">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-system-messages">
+                                            <div id="system-message-container">
+    <div id="system-message">
+            </div>
+</div>
+            
+    </div>
+        </div>
+            </div>
+            
+    </section>
+                    
+                <section id="g-navigation">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-15 align-right">
+             <div id="logo-1424-particle" class="g-content g-particle">            <a href="../index.html" class="g-logo g-logo-akuatik" target="_self" title="" rel="home">
+    
+            <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100%"
+   height="100%"
+   viewBox="0 0 2212 580"
+   version="1.1"
+   xml:space="preserve"
+   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+   id="svg6"
+   sodipodi:docname="fagfolk-logo.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"><metadata
+     id="metadata10"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="740"
+     inkscape:window-height="480"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="0.13833635"
+     inkscape:cx="1106"
+     inkscape:cy="290"
+     inkscape:window-x="2400"
+     inkscape:window-y="258"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg6" /><use
+     id="Background"
+     xlink:href="#_Image1"
+     x="0"
+     y="0"
+     width="2212px"
+     height="580px" /><defs
+     id="defs4"><image
+       id="_Image1"
+       width="2212px"
+       height="580px"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACKQAAAJECAYAAAAirW6vAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NzFDNzU1MTU3MkI0MTFFQkE4NEJFQTNDNkU5NTRBNzUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NzFDNzU1MTY3MkI0MTFFQkE4NEJFQTNDNkU5NTRBNzUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MUM3NTUxMzcyQjQxMUVCQTg0QkVBM0M2RTk1NEE3NSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MUM3NTUxNDcyQjQxMUVCQTg0QkVBM0M2RTk1NEE3NSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ppp99rMAAGLeSURBVHja7N09bGRZmxjmu9yRVzJgLg3JgOHkq09MFCwwnMCB8QVdBTgSChoSEOCsupgRG6hJwJGTZicy4IQ9CoTOWM1IUNIcgKEB1gQfHCgYDqBgk9bUGgYEyD9LFaw/a1fjc7oOp9ndZDd/6uece54HuKiemR7y1Htu3XPr3ve+7x/88ssvDVCe6aDvw9suB+snZy+FAQAAAAAAAGiDNSGA8kwH/a4otM4TIQAAAAAAAADaQkIKlKkrBOYUAAAAAAAAIFcSUqBMqmm0z8Z00O8IAwAAAAAAANAGElKgTFtC0EpdIQAAAAAAAADaQEIKFGY66MdklA2RaCWVbwAAAAAAAIBWkJAC5ekKQWupfAMAAAAAAAC0goQUKM/XQtBaW9NBX/UbAAAAAAAAoHgSUqA8XSEwvwAAAAAAAAA5k5ACBUnVMzoi0Wra9gAAAAAAAADFk5ACZekKQes9EQIAAAAAAACgdBJSoCySFdqvKwQAAAAAAABA6SSkQFm0c6nAdNDvigIAAAAAAABQMgkpUJauEFRB4hEAAAAAAABQNAkpUAhVM6qiNRMAAAAAAABQNAkpUI6uEJhrAAAAAAAAgBJISIFyfC0E1diYDvodYQAAAAAAAABKJSEFytEVAvMNAAAAAAAAUAIJKVCA6aC/FV42RKIqKuIAAAAAAAAAxZKQAmXYEoLqdIUAAAAAAAAAKJWEFCjDEyGoztZ00FcVBwAAAAAAACiShBQoQ1cIqqQyDgAAAAAAAFAkCSmQuVQloyMSVeoKAQAAAAAAAFAiCSmQv64QVEurJgAAAAAAAKBIElIgf9q21KsrBAAAAAAAAECJJKRA/lTJqNh00JeQBAAAAAAAABRHQgrkrysE5h8AAAAAAACgJBJSIGPTQb8rCtVTIQcAAAAAAAAojoQUyJt2LdgHAAAAAAAAgOJISIG8qY5BZzrod4QBAAAAAAAAKImEFMhbVwiwHwAAAAAAAAClkZACmUpVMTZEguBrIQAAAAAAAABKIiEF8tUVAuwLAAAAAAAAQIkkpEC+nggBydZ00FctBwAAAAAAACiGhBTI15YQYH8AAAAAAAAASiQhBTKUqmFIQOC6rhAAAAAAAAAApZCQAnnqCgEf0cIJAAAAAAAAKIaEFMiT6ijYJwAAAAAAAIBiSUiBPKmGwcc2poO+pBQAAAAAAACgCBJSIE9dIcB+AQAAAAAAAJRKQgpkRhUMPuNrIQAAAAAAAABKICEF8tMVAuwbAAAAAAAAQMkkpEB+nggBt+hMB/2OMAAAAAAAAAC5k5AC+dGyB/sHAAAAAAAAUDQJKZCRVP2iIxJ8hgo6AAAAAAAAQPYkpEBeukKAfQQAAAAAAAAonYQUyMvXQsAXaNkDAAAAAAAAZE9CCuSlKwR8yXTQt58AAAAAAAAAWZOQApmYDvobjeoX3E1XCAAAAAAAAICcSUiBfEhG4a6eCAEAAAAAAACQMwkpkI+uEHBHkpcAAAAAAACArElIgXyoesFdbUwHfUkpAAAAAAAAQLYkpEA+ukKA/QUAAAAAAABoAwkpkAHVLniAr4UAAAAAAAAAyJWEFMhDVwiwzwAAAAAAAABtISEF8qDaBffVmQ76G8IAAAAAAAAA5EhCCuShKwTYbwAAAAAAAIC2kJACKzYd9DvhpSMSPMATIQAAAAAAAAByJCEFVm9LCLDvAAAAAAAAAG0iIQVWT5ULHqorBAAAAAAAAECO/uCXX34RBViR6aC/HV6OGi17eLiXYftu/eRsIhQAAAAAAABALiSkwBJNB/2N8BKTUL5tZtUtNkSFObkI2+uwnUpOAQAAAAAAAFZNQgosQaqE8rSZJaPAoklOAQAAAAAAAFZKQgosSEpCiZVQ4qtKKKzKVXLKaP3k7FI4AAAAAAAAgGWQkFKA6aB/HF5+WD85G4lG9nO11byvhNIRETJzGrbvHUuKOJbE48fzsH0X5utCRAAAAAAAACiNhJTMTQf9o/Cyn/5xErYXbiZnN0ex+klMQHkWti0RoQCxUkpMTpHskN/xpNPMElGG1+bqt6rbAAAAAAAAUBoJKRmbDvrD8HJ8w3+aNBJTcpifbjOrhjIUDQoWE1K+C9uppIeVH09iUtv2TXMU5uYbUQIAAAAAAKAkElIylVq/nIdt4zN/Ld48jjeSX7qRvLR5ifMxbGY3jjsiQouomrKaY0q3mVVE6X7hr47CvOyKGAAAAAAAAKWQkJKhlPTwY3P3hAeJKYufk5ggdFW9YENEaLl3VVNUYVroMaXb3C0R5bpdcwIAAAAAAEApJKRkaDrox8oo3Qf8rxJT5j8Xw2bWlqcrGlTo6pgSq3NMhGNux5SY3Lb1wB/xjQo2AAAAAAAAlEBCSmamg/5ReNmfw48ahe2Fm8gPmgNteeDmY4p2Pg8/rsRjyvM5HFNiktBvJR0CAAAAAACQOwkpGUk3LI/n/GNHjcSUu8a/07xPRNGWB242TseUsVDc+bg+j0SUD+YgxL8nugAAAAAAAORMQkompoN+bN8QW/UsKhFi1EhMuS32nWZ2w3goGnBnsVJKrJgyEopPjinxOB4rXcV2X50F/ZrYmu1AtAEAAAAAAMiVhJQMpJuXPzbLaQ8zblQ3uIp7jLdEFHicSTqmjBxTfk1EWVaVpV1xBwAAAAAAIFcSUjIwHfRjZZTukn/tuKk0MUUiCizEpKk0MWUFiShXLsPWCzG/sPsBAAAAAACQGwkpKzYd9I+a2Y3MVRk3lSSmSESBpZg0lSSmXDumbDfLTUT5ON7fhHhf2vUAAAAAAADIiYSUFZoO+sPwcpzJcCZNS28iS0QBx5SWH1PGIc49uxwAAAAAAAA5kZCyItNBfyu8xFY9G5kNbdK05CayRBTI5phyEI4pp44pC/UyxPjA7gYAAAAAAEAuJKSswHTQj0koP4atk/EwJ02hiSkpvrEN0nN7G2Rj3BTaHiwcU7rh5Vkza82Ts90aWiUBAAAAAABQBgkpKzAd9N80+d/YvHIZtu+a2dP3lwXE9rCZ3TjesKdBlsbNLHFiUsDxpNvMEtu6BR2veyG2F3YzAAAAAAAAVk1CypKlhIkSK3dknZgS4jpMce3Yy6AIo2bWyifH40m3KSsR5bpJ2L4pIYEQAAAAAACAdpOQskTTQT9WRXlT+NvIKjGl8BvHULt3x5NwLDnM5Bg9bGYVlrYKj+s4xLRn9wIAAAAAAGCVJKQsyXTQjzc4z5t2tZIZhe3FKlpvhHjGOB6FbWjvguLFY0hs4zNe0fE5HkfaVmEpJg0e2LUAAAAAAABYFQkpS5CSJ2IyylZL3+KoWWJiSojnfjO7ebxh74JWGTezxJRlHUuGTbtbfcVYjuxWAAAAAAAArIKElCWYDvqxTc92BW911CwwMSW154lVUbbsVdBqLxbVxiclCMaktqdNexNRrsSWSL0Qywu7FAAAAAAAAMsmIWXBpoP+YTN7Ar8m42Z2Q3k8pxhqzwP1mTRzbONzLRHlWVNXdaUYx29CHC/tUgAAAAAAACyThJQFmg76sSrKm4pDMG4emZiSWmrEZBTteaBOp80sMeVBCRUVJ6J8cCwO8evZlQAAAAAAAFgmCSkLMh30Y1uZ80YiRTRu7pmYEuLXCS/HYesKH1TvMh1DXt7zGBKrU207Dr/zMsTvQBgAAAAAAABYFgkpC5CeyI/JKFui8YFJM7upPPpC/GI1g3gj2U1k4LpxM6uWMvnM8aOTjh9D4frE7peOvwAAAAAAADAvElIWYDroxzY92yJxq0lzQ2JKqioTq6JI5AFuc2O1FIkod45dL8TuQigAAAAAAABYNAkpczYd9A+b2U1RvmzSpMQUcQPuaRy23bB1wvaskQR4n+PuN+G4eykUAAAAAAAALJKElDmaDvrxhugbkQAgY6frJ2c7wgAAAAAAAMAiSUiZk9Ru5jxsG6IBQOZidapDYQAAAAAAAGBRJKTMwXTQj0koMRllSzQAKMTO+snZqTAAAAAAAACwCGtCMBfHjWQUAApbu1J1LwAAAAAAAJg7FVIeaTroH4aX5yIBQIEuwtZbPzm7FAoAAAAAAADmSYWUR5gO+tuNZBQAyhUrpBwLAwAAAAAAAPOmQsoDTQf9Tnj5MWwbogFA4V6sn5wdCgMAAAAAAADzIiHlAaaDfkxCOW9mT5YDQBvsrJ+cnQoDAAAAAAAA86Blz8McNZJRAGiX4+mgb20DAAAAAABgLlRIuafpoL/fzBJSAKBtLsLWWz85uxQKAAAAAAAAHkOFlHuYDvrdRjIKAO0VK6QcCwMAAAAAAACPpULKHU0H/U54+TFsG6IBQMu9WD85OxQGAAAAAAAAHkpCyh1MB/2YhHLezJ4cB4Aa7KyfnJ0KAwAAAAAAAA+hZc/dxDY9klEAqMnxdNC39gEAAAAAAPAgKqR8wXTQ329mCSkAUJuLsPXWT84uhQIAAAAAAID7UCHlM6aDfreRjAJAvWKFlGNhAAAAAAAA4L5USLnFdNDvhJcfw7YhGgBU7sX6ydmhMAAAAAAAAHBXElJuMB30YxLKeTN7MhwAaJqd9ZOzU2EAAAAAAADgLrTsuVls0yMZBQDeO54O+tZGAAAAAAAA7kSFlI9MB/39ZpaQAgB86CJsvfWTs0uhAAAAAAAA4HNUSLlmOuh3G8koAHCbLeskAAAAAAAAd6FCSjId9Dvh5cewbYgGAHzWwfrJ2UthAAAAAAAA4DYSUpp3ySgxCeW8mT35DQB8WWzdMxYGAAAAAAAAbqJlz0xsPyAZBQDu7k2qLgYAAAAAAACfqL5CynTQ329mCSkAwP1cNLNKKZdCAQAAAAAAwHVVV0iZDvqxKopkFAB4GOsoAAAAAAAAN6q2Qsp00N8ILz+HbcNuAACPcrB+cvZSGAAAAAAAALhSc4WU80YyCgDMw9F00O8KAwAAAAAAAFeqrJAyHfSPw8vQ9APA3FyG7Zv1k7OJUAAAAAAAAFBdQsp00B+Gl2NTDwBzdxG23vrJ2aVQAAAAAAAA1K2qlj3TQX+rkYwCAIsS19kjYQAAAAAAAKCaCinTQX8jvPwctg3TDgALdbB+cvZSGAAAAAAAAOpVU4WU80YyCgAsw9F00O8KAwAAAAAAQL2qqJAyHfRjm56h6QaApbkM2zfrJ2cToQAAAAAAAKhP6xNSpoP+MLwcm2oAWLqLsPXWT84uhQIAAAAAAKAurW7ZMx30txrJKACwKnEdPhIGAAAAAACA+rS2Qsp00N8ILz+HbcM0A8BKHayfnL0UBgAAAAAAgHq0uULKeSMZBQBycDQd9LvCAAAAAAAAUI9WVkiZDvqxTc/Q9AJANi7D9s36ydlEKAAAAAAAANqvdRVSpoP+sJGMAgC5iVXL3ggDAAAAAABAHVpVIWU66G+Flx9NKwBka7R+crYrDAAAAAAAAO3WmoSU6aAfn7z+uZk9gQ0A5Gt3/eRsJAwAAAAAAADt1aaElFgZZcuUcpO/9rv/tvnPfvffC0Rl/r/f/6/Nf/z9P8t+nH/6r/7r7Mf4t//aXzb/43/5f9mpmKdv1k/OLoQBAAAAAACgnb5qw5uYDvpHjWQUPmPtb/5XzR/+ye8EorZ5/7Ofihjn//YfvjJZ1Og8rN+/XT85uxQKAAAAAACA9lkr/Q1MB/1heNk3lQBQlNhi71wYAAAAAAAA2qnohJTpoB+rohyZRgAo0lZYy4+FAQAAAAAAoH2KTUiZDvrxyeo3zewJawCgTMNU7QwAAAAAAIAWKblCSkxG6ZhCACjecap6BgAAAAAAQEsUmZAyHfRjm56u6QOA1jhP1c8AAAAAAABogeISUlJZ/31TBwCtEpNRzoUBAAAAAACgHYpKSEnl/I9MGwC00lZY64+FAQAAAAAAoHzFJKSkMv5vmtkT1ABAOw1TNTQAAAAAAAAKVlKFlJiM0jFlANB6x6kqGgAAAAAAAIUqIiFlOujHNj1d0wUA1ThP1dEAAAAAAAAoUPYJKals/76pAoCqxGSUc2EAAAAAAAAoU9YJKalc/5FpAoAqbYVzgWNhAAAAAAAAKE+2CSmpTP+bZvaENABQp2GqlgYAAAAAAEBBcq6QEpNROqYIAKp3nKqmAQAAAAAAUIgsE1Kmg35s09M1PQBAcp6qpwEAAAAAAFCA7BJSUln+fVMDAFxz1coPAAAAAACAAmSVkJLK8R+ZFgDgBt1URQ0AAAAAAIDMZZOQksrwxyefleMHAG6zn6qpAQAAAAAAkLGcKqQch61jSgCALzhKVdUAAAAAAADIVBYJKdNB/zC8bJsOAOAO3lVVS9XVAAAAAAAAyFAuFVL+2FQAAPew0WjzBwAAAAAAkK0sElLWT84OwsuF6QAA7mgnnD9MhAEAAAAAACBPaxmNpRe2S1MCAHzBwfrJ2VgYAAAAAAAA8pVNQsr6yVlMRtkxJQDAZ4zCOcNLYQAAAAAAAMhbThVSmvS084FpAQBucOE8AQAAAAAAoAxruQ0oPfU8MjUAwDWxktpuqqgGAAAAAABA5tYyHVd8+vnC9AAASUxGcW4AAAAAAABQiCwTUtLTzzvN7GloAKBuL8K5wakwAAAAAAAAlCPXCikxKWXSzJJSAIB6nYZzgkNhAAAAAAAAKMtazoNbPzkbN7P2PQBAfWKLnl1hAAAAAAAAKM9a7gNcPzl7GV5GpgoAqhLb9u2mNn4AAAAAAAAUZq2QccYqKRemCwCqEZNRrP0AAAAAAACFKiIhJT0dvdPMnpYGANrtRVj7T4UBAAAAAACgXKVUSIlJKZNmlpQCALTXaVjzD4UBAAAAAACgbGslDXb95GwcXl6YNgBopdiiZ1cYAAAAAAAAyrdW2oDTU9PK+ANAu8S2fLupTR8AAAAAAACFWyt03PHp6QvTBwCtcbB+cmZtBwAAAAAAaIkiE1LS09MxKcVT1ABQvpdhbR8JAwAAAAAAQHuUWiGlSU9R75pCACjaOKzpB8IAAAAAAADQLmslD3795Ow0vLwwjQBQpEnYdoQBAAAAAACgfb4q/Q2sn5wdTgf9r8Mft00nbfJv/+E/EIRH+k//z18UMc5//LfyH+d/sfZXdijmLbbd20lt+AAAAAAAAGiZr1ryPmLrnk7YtkwpbfGXf/YvBKES/93f+DeCQI0OUvs9AAAAAAAAWmitDW8iPV0dk1I8ZQ0A+XsZ1u6RMAAAAAAAALTXWlveSHrKeteUAkDWxmHNPhAGAAAAAACAdltr05tZPzk7DS8vTCsAZGkSth1hAAAAAAAAaL+1tr2h9ZOzw/AyNrUAkJ2d1GYPAAAAAACAlltr6fuKT19PTC8AZGM3tdcDAAAAAACgAq1MSElPX8ekFE9hA8DqjcLaPBIGAAAAAACAerS1QkqTnsI+MMUAsFIXYU3eFQYAAAAAAIC6rLX5zaWnsV+aZgBYiViprCcMAAAAAAAA9Vlr+xtcPzmLVVLGphoAlq6X2ugBAAAAAABQmbVK3udO2CamGwCWZje1zwMAAAAAAKBCVSSkpKezY1KKp7QBYPFGqW0eAAAAAAAAlaqlQkqTntI+MOUAsFAXYc3dFQYAAAAAAIC6rdX0ZtPT2i9NOwAsRKxE1hMGAAAAAAAA1mp7w+snZ7FKyoWpB4C566U2eQAAAAAAAFRurdL3HZ/edsMMAObnILXHAwAAAAAAgDoTUtLT21oKAMB8jMLaqiUeAAAAAAAAv6q1QkqTnuLetQsAwKPE9fRAGAAAAAAAALhureY3v35yNgovI7sBADxIrDi2kyqPAQAAAAAAwK/Wag/A+slZrJJyYVcAgHuLySgTYQAAAAAAAOBja0LwTq+ZPeUNANzNwfrJ2VgYAAAAAAAAuImElOZdlZSYjNITCQC4k1FYO18KAwAAAAAAALeRkJKsn5zFtj27IgEAnxXXywNhAAAAAAAA4HMkpFyzfnI2Ci8jkQCAG8WKYjupshgAAAAAAADcSkLKR9ZPzmKVlAuRAIBPxGSUiTAAAAAAAADwJRJSbrbTzJ4CBwBmXqyfnI2FAQAAAAAAgLuQkHKD9PT3jkgAwDunYW08FAYAAAAAAADuSkLKLdJT4AciAUDlJmHbFQYAAAAAAADu4ysh+KwNIQCg9rVw/eRMGzsAAFpls7e31cyu+1y9Rl83D7sWdBG2f33tz/H8efL2/NVEpAHIdP2Lujf8ld+ErXPD+nbdOL1ehrXuQlQBgM/5g19++UUUbjEd9H++dvJFwf7o7/3d5o/+/p+Wtv+ZOCAXu+snZyNhgOXb7O2di0IrHLhQ28rPZ7yYf2Q/gyI+q3HrhO1Jeu0scQiTtP2QXi98VqlkXeKBwjGiJwo88nhwtdZ1m/cJJtcTUeYtJmJepHXuz5tZwkpc7zzgxKo+A0dpn8/R6/DZGJklnFc+WFxfDsxH1n4Ic3R4/V+okHKL6aC/3UhGAYDo27D5ogSr0RWCVlB5sZ2eZvYZjeNxk5vqbfb2uumz+SSTz2ineX9T8GqM8WWcPrMxUWXsph1zOt9w7gh1r31fp9dlf//4+PjzPI1r8tFa51yVZdnKeE38wfTgvJJ7rPFxLo6bfJPsPha/136SMCQh5XbfCgEAvLM9HfQ76ydnE6EAgF8Nc1uvb/rSD22XngKP+/+T9FqKbtr20/uIN+m+D9upG3YAtGTt66RtO4073qQaX1vvJGMCwOfF6tlbBY1356bvsxJSbjAd9GO20VAkAOBX8eLBS2EAgHcX0+O6mFvlm04cV/jif2qGqOAz2Ennp7Ey0FZL3tZVa6Hn6Yny+Fl+LTkFgBatfRvpPcTtOCVjvg7bSHIKAHyy9pdUGSXaDev5+Kb/ICHlZttCAAAfiBc8JKQAwPt1MUex0qeEFFoplSq+uhHXbfnb7TSzyin7KTnl6mbdxJ4AUOXa96xpTwLmdVfJmEfhvcZz2O/DWjcy8wA4B9iL3weHBQ159Lk1fM2U3ki7HgD46CLBdNDfEgYAXBT49cZAjoZpfNCmz1wnPRn2czPrnd2tLASdsD2P7z/E4U3YuvYKgNavfVtp7fuLtPbVcD3mqmpKXO8OU0UYAKjxPGAYXo4KGnJsw7f7ub8gIeUj00G/06iQAgA3eSoEAJD990XfZ2mFmHgRttgvOyaiDJv82mSt6vN9nm7WDYUDoHVr33Za+35synoqep46zftEzGOJKQBUdi7wrnJYQUOO7fd2v/SXJKTc/OUeALBGAsBNnmU+PgmkFO1aIkrcuiJyo07z/inyoXAAFL/2xSp3MQHzjbXvA3GNk5gCQC3nA530PbiUhzEuw7bz9vzV5Zf+ooSUT7l4BwA362jbA4CLA9mXTO+6YE+hny+JKA84P28kpgCUvPZdJaIcp2M6N4trnMQUANp8ThCTUGJiakmVQXtvz19N7vIXJaRck9r1uNEGALeTuAlAzYaFjFNVM4ohEWUuOs0sMSW28xFDgHLWPoko9z8Xj4kph+nGHQC0RTwnKClHYfft+auLu/5lCSkfctEOAKyVAHCbUhIzn5kqchdvJMUnnRuJKPMU4xiTUo7cqAPIcu3rhO2Nte/RnjezxJShUADQgvOD+L24pPsuL9+evxrd53/4yjR/wFPfwNL90d/7u9mP8T/93/9n8x9//89MFtG7tj3rJ2cXQgFAZRcI4pMqnVLW6zje+zytAkv+PO03s5tJkiYWI8Y3toGIT62dCgdAFmvfYTNLGrb2zUeMY6wOFu/pHDjvBaDQ84NhU0413ug0rLkH9/2fJKQk2vUAq/JHf/9Psx/jX/3z30tI4br4Zd8XfQBqU1rVEes12UmJXaWVIi7Vux7kIeYxISUmplwKCcBK1r5uozXPIsX4/hji/CKsdYfCAUCB5wiliNeYdh/yP2rZ854WBABgzQSAtqx/Q1NGTtKT4T82klFWcez6MV3sBGB5615sTXfUzNrzdERk4Z6HeP+Ykl8BIPfzhLhevSloyPEBh95DH3SQkPLeEyEAgDt517ZHGACoxWZvL97QLa28+kYaN6z687MVbxA1sxY9rOj8PWznKSkIgCWsfc0sCXNfNJbqXdxTa0AAyPU84V01y6ac60yPSkaJJKQ079r1xAl3oQ4A7q4rBABU5Gmh4/7W1LFKqR92fDJcMnMe4tPjb9IFUAAWs/YdNrNklI5orMxRmIdz6x0AGZ4nbDTlVU87eHv+6lEtoSWkzEhGAYD7eSoEANQgXSwo9Tvj0IV4VvW5CVvshR03+2Be4vEs3qTrCAXA3Ne+eINJRbA8dMP2sxY+AGQmtvMraW168fb81eixP0RCyox2PQBwP1upwhgAtN228cPdpUSHeENuKBr5nss3s5YGbtIBzGftu2rR0xWNrGyk9c45CQA5nC8cFvY9efT2/NXhPH6QhJQZF+gAwPoJADd5Vvj4VTVjaTZ7e91mdkNOokP+3pWKlpQC8Oi1b9iUV3q/NsepchsArPJ8oaQqarFFz8G8flj1CSnTQX+rUT4WAB7iWyEAoM1SpYfSb9Z2teZgSZ+XYTO7IecaSzk8OQ7wuLXvsNGerhSxleUb7SwBWMH5wlY6XyjFZdh6b89fXc7rB6qQ4uluAHiorhAA0HJD33vhy67dkKNMx5JSAO699sV177lIFHdOfC4pBYAlni/EZJTzgoY892SUSEKKp7sB4KE2UqUxAGirtrS7eWYqWRQ35FrjWPsegDutexux0kbTnsTl2ry7MSgpBYBlnDM05VVS2317/upi3j+06oSU6aC/0ehrDACP4YlrAFop3ZjttOTtdNxoZkGfk3hxbSgSrXHuWAHw2XUv3k+ITzm7FlI2SSkALMObpqw8hIO3569OF/GDa6+Q0vVZAIBHUWkMgLZqW1WRp6aUeZKM0krvbrSGue0IBcAn695VMorEvXaQlALAor8vdwsa8ujt+auXi/rhtSekuIkGAI/8Ap8qjgFA27TtydehKWVeJKO0Wjy3f+MGHcAH655klHaSlALAIs4b9gv7vnzx9vzV7iJ/gQopAID1FACu2eztDZuyevzexUZ4X8rLM4/Ph2SU9os36I6FAUAySiVrnqQUAOZ13hC/Kx8VNORJ2HqL/iXVJqRMB/1O055+4ACwSk+EAICWaWs1TW17eJTN3t5hIxmlFtvpyT6A2sUEPcko7fYuKUUYAHjk9+W4npSUjHIZtp23568uF/2Laq6Q0vXRAABrKgBcl56ObGslkW1Pf/KIz8YwvDwXiaocpYuqALWufcctPi/kQ1tpvgHgIecMVxXVSrrmEpNRLpbxi2pOSPE0NwDM6Uv7dNB3cwuAthi2/P25qcK9bfb2uo0WLrV6I5ENqHTtO2xUBavue0CadwC4zzlDickou2/PX42X9ctUSAEArKsA8F7b29o8M8Xcx2ZvrxNe3ohEteL8q4wD1Lb2DR37qvU8zT8A3FVp7f1Gb89fjZb5C6tMSJkO+p30hRoAmA+VxwAoXrrx3vb2FFvpfcJdPhPxCa+YjKJCRt32U5UcgBrWvngueCQSVdOyDoC7njeU1t5v/Pb81e6yf2mtFVKcTACAtRUAPlZL9ZChqeaOjpznkWjZBLSeREySd/uBlnUAfOG8YdiUdX3lImw7q/jFtSakeIobAOarKwQAtMB2Je/zqanmSwq8uMZidcI+cSgMQMvFZJSOMJD2A8mYANz2fblb2DpxGbbdt+evLlfxy2tNSOn6qADAfE0HfesrAMVKFxM6lbzdjjLkfOHzoF0BN3mm5RfQ4rXvsHHfgA9th/1iXxgAuOH78pvChr3z9vzVxap++VeV7isuvAHAYtbXsTBANXze7+5SCIpQW9WQ2J5o17Rzi/ikVw1l6ifNrGzxT+k1Hq8vPvfUWCrff3VdqRu23zSzZLZuBfGK7/25YwcPPBe6EAZylW4sPa/oLV+kNfCne3w+r9a5r9O6V8s9ludh/xiv8iYeAFmdM5TY3i9WRhmvcgDVJaR4ehsAFia2xHspDFCH8EWmJwq0zHaF79dNZT6RnhBv602meNNtHLbv42tYyyYPWP+ufkbTfJScmSotxe3bFsdwGN7ni4fEjqpdOHck43Xv6sZSm52G7Ye09j00sWJ8Q+y6ab170uJz6bh/xETdb3xaAJwzhJfzpqzqui/D2j9a9SBqrJCiOgoAWGMB4Febvb1hU0c1iOs2wvvefnv+6tQewLXPQlufEB+H7XXYThfZMzs9dRa3w3SxMt6ce9ay8+R4zFD5C2iTuO51Wvi+RmH7fpHnetfWvZfX1r1vm/Ylp2zFhN3wfg99XACqdlTYd7v4/fcgh4HUmJDytc8LACxEZzrob6yfnLlADUBpvq30fcc2RRJSuO64Ze9nFLaVVPNIiS/x9482e3udZpaYMmzKTn47CO9LRUSgNVKFj/0WvaW49nzXzJ6GXuq1mRvWvWFa+9qS9B1b94xUCAOo9pzhMK1tpYgV0bKpirtW4T7T9bEBgIVRJQWAolx7mrNG2+n9Q/ws7LfoXG4Utt++PX+1m8ONoziG9GTab8P2oimvwkiM4TeSUYAWaksi5mVaX+Lad7jsZJRb1r3Dgte9tu8vANzvu/KwKauSaFx3d1Z9PnBdVQkp8antpp3l9wAgF10hAKAww8rf/7ZdgJSY1IZWPfEpsF4uiSgfixcEC7xBF6soxWSUC58UoGVrXzwed1rwVmKyYBaJKF9Y99qQ1NhNNyUBqOd8IT60UVpCYi+378O1VUjx1DYALJbWeACU5mnl7/+ZXYBm1gu79Go5sZ1MTJwY5z7QazfovmnybpsVY7qT2w1OgMdKLWVKT8SMiYJx3TvI/Tid1r2DtO6VnuB4pMIgQDXnCzGv4LywYe/m+DCBhBQAwFoLQJXSzYja166tFAfq/RzEz8Cw4LdwdUOuuCevU0uDnfDHXjNri5OLSaNFD9BuR4WP/2VKwiwquSOON467mVUJK1VMRtn3EQJo/ffkeLw/bsp6cONFWGdHOQ6stoQUT20DwGJ1Uos8ACiB6iAzQyGoWsk35UbNrBxx0U9bp6ouuVRL0aIHaLXN3l63Kbdl4WVa9w4KX/cO07o3KfQtPJfQDdB6b5qyHmAapfU1S7UlpDhJAIDFUyUFgFJsC8E7T4WgTummXLfQ4cenv3bb0k4mtTOI1VJ2VzgMLXqAGpTaqueqIti4Jeveu/fTlNvC57mPEkBrvycfF/Y9Oa6lWSer1paQ0vUxAoCFk5ACQPbSjfiOSLzTSW1bqE+pN1N2c3766zFSieV4g26ZSSGTRoseoI7zv2FT5j2CeKMpVkaZtGzNu0wtfEYFDn+oSgpAK88VYlu2YUFDvqqelvVDBdUkpEwHfRfXAGA5fiMEABQgl6og40zGoX1RZQqujrKba1/seUlPjfea5bQy0KIHqEmJiZixBP83ba5eFSueNWUmpaiSAtCu78ixim5JLW2LSEaJaqqQ0vFRAoClkAQKQNY2e3sbTT7tenYzGYf2RfUp8SZK65NRriyplYEWPUBN53/Dprx7BKOUrFHDuldiUooqKQDtOU+I9zSOCxv2QSkPFtSUkOLmGABYcwEgiskXGxmM4zSVXj/NYCwb6UYNFSi0OspBLckoV1KiyCIqpcSfq0UPUJvSEjHHtSSjXFv3SkxKUSUFoPzvx/H60HmTx3Wiu3pR0vfjmhJStA8AgOXYmA76G8IAQMa+zWQc33/0Ki4sy9PCxjuqNXkiJaXsNLMkknkYh+23WvQANUmJmJ2ChnyRjv01rnu7TT4tLe9ClRSAss8RSkxGid+PD0uKs5Y9AMAiqJICQJbSBeNc2tOcfvS6atvpYgzt/wwMCxryRW1PiH8sJY/05vCj4lN0PS16gAqVVMXiXSJi5cfqmIxTUuLkMx8xgGLFNj0l3cso8vtxTQkpXZ8pAFiajhAAkKlsklGubjSk11ySUoZ2kdYr6abJVXWQ6qWklN1HxLFX2lN0APOw2duLN5m6BQ15J7V0rHnNu0xrXilJOUNJ3QBFniMcNflcI7qLeH7QKzHWVSSkaBsAAEvXEQIAMpVLq5KP2/T8ID4sybCgse7WflPuutQj/L7Ja+Nm1qJnLIJApUpKxHzheP3rmhcTMQ8KGW68/7Rt1gDKsdnbi9+L9wsactEV1GqpkKJtAAAs1xMhACA36QnZXL4fnn7hn1f2/Tm1dKGdn4FhU05v7FhF6NSsfSI+MT6549/Vogeofd0rKVHgQiWrDz0wEXNVtO0BKOf8oNvMWvUU9T0wJWsWqZaElI6PFwAAQPVyqf5x+vEN4lQFIpeLCy6ot9e3hYzzqlQ/H7nWxuBL8dOiB2CWjFJKIqZ17/a4lJBYuZWS3wHIWDpWvyls2AelP6whIQUAWISuEACQoVyekP3+ln//WpxYlMKeEn+hqsftUjuH2y5Ixv+mRQ/ATClJti9Kfup5wWtePB84sL8BMKfvxDEZZaOgYY/CWviy9NjXkpDyGx8zAFiu6aC/IQoA5GKztxdvxHcyGEq8qH7bjeRcnnjppBK2tMuwkHFO2nDBbQkOmk+fGNeiB+D9uV887yuhYsUkbNa9z0ite8YFDFVSN0DezpuyiljEdn6tqKCmQgoAsChKlQKQk1xalZzedrM4s7Y9T+0yrVPKnGpZcAfpePFd+kctegA+VVJ1FImEd4hTAWPcSEnwAGQmHJ+Pm7LuV8RrQ722xF9CCgAAAK2WWauS77/w37XtYVGfgRIuvo21mrmX+ER9rKykRQ9Amecyk1T9gy9I61wJa923Zgsgu+/Dh005FUOjmKi626aEVQkpAMCidIUAgEzEGxI5tJK7fHv+6ktteXJp2xOf8BzadVr1GSjBC1N1d/ECZdh2PFkP8KFwDhOTMDvWvdYpIV6SugHyOicYhpfnhQ07fse7aNM8tD4hZTrob/i4AQAAVC2bdj1f+guZte3xhKfPwDJdqPIBwJx0Cxij6ij3VEiVFG17ADKRElSPCxv2bhu/F9dQIWXLRw4AVuJrIQBg1TZ7e52mnHY9V7Jp25NavVC+bgFj/M40ATAnTwsYo+oo7T1fkNQNsGLpWtB5YcMetTVZdc0uCQAsiBtYAOQgl2SUu7TruXKaUfyGdqGypafCcj8vu/SUOABzWvfimpf7Q6qXmZ3vFSOdT08yH2bXTAGs/FzgTVPW/YlxWON22zonNSSkWPwBYDU6QgBABnJ5QvbONx0ya9vz1C5UvBLKxo9MEwAVrXun4Xzv0lQ92OvMx9dJCcEArEZMRinpOByv/+y0eUJUSAEAFvYFXAgAWKV0ITiXixDf3/Pv53KhfSuVuqVcJbRRfG2aAJiTJwWMUZu6xxkVMMauaQJYvs3e3nFhx+CYoLrT9kTVGhJS/tjHDwAAoEq5VPe4T7ueKzmVcX9mVypaN/PxTcLn48I0AWDd4y4yqyZ4mydmCmC5Nnt7+015bYd7aV1rtRoSUpRGA4AVmQ761mEAVimXku33Ti7J7EL7tl2pTKm6Te59s0/NFABzWvfimtex7lUh9+pqXVMEsNRzgHjd4qiwYe/WkqSqZQ8AsEgbQgDAKqSLEZ1MhvP9A/+/XC60d1I8KU8JycHa9QAwL90Cxvi9aZqL3BN7NrS9BFiO1K75uLBhv3x7/mpUyxy1OiFlOujHBd+iDwCr0xUCAFbk20zG8ZB2PVdOxZNHyj0hRdsCAGpa9+J54dg0PV6qJjjJfJhdMwWwWKk62nlT1oOxp2EdO6hpnlqZkDId9Lthi5lQPzcSUgBglZ6HNfnnsA2FAoBlSRckcll7HpxUklvbnhRXyvIk8/GNTREA1j1aGs+vTRHA4hSajBKv8ezWNletSkhJiSjnaecb+igCQBY6YTtOiSmHYXMzC4BFy6m9zGPLsufSzmQjs7hy9/OwnP1gigCw7tHSeG6ZIoCFOi7sWHsZtp23568ua5uor9rwJmIiSnh53iiBBgA566T1+llYu78Lry/XT84uhQXKtNnbO6zxfYcvjYdmvwhPMxnHY9r1XIn//1Em7ye27RnZvYo7/8rZ2BRBHceiSs8dY1sy66Z17zpt6uo6j5CQArAg4dwyXicp6aGZeB+klyrhVqfohBSJKABQpI1GYgq0wfNK3/ehqc/bZm+vk9F3xNFjf0C8WBHeU7x5kcMF7di2p1PrBZQCPwu53wS5tC9BNTqVnjuOG4mcy1z3urmPMax7YzM113jG8+R4PSnXSrwbsZ1EjU/CAyx4zR+Gl/3Chn0Q1oNqE1OLTEiZDvrD9CWm42NHaz+cf+dvFz3+v/o//mXzy//77xb28//wN/9N8wd/46/bUaBsHyemjNZPzibCAsAj5fSEzOs5/pytjOL70m5WzLlWzjwlDsA8dTIf39gULex8opvx+LbMPcDcj6vdwsb8ovaqeUUlpEhEoSb/+f/0j4oe/7/9h/+g+cs/+xcL+/l//X942vzhn/zOjgLtcJWY8jys9fHE7IXEFAAe4Vkm45jM8emXnNr2xHZIElLKkHuFlB9MEQBz1Ml8fBNTtLDzia79EqAaG4WNd6T9d9OslTDImIgStp/DH48t4ADQasOw/RzW/eOwWfMBuJfUoiSX9eN0Xj8otTXJpZrEVgGtYJjJ/ULdxBQBMEd/nPn4/twUVXk+0TFFANWK13EOhCHjCinTQT9eOImlgFVEAYD6DOOmYgoA9/Q0o7G8XsDP28ooztqt8FjO7wCYp9wTZsemqMrzid+YIoBq7b49f3UpDBlWSImJKGE7DH9UEQUAGDbvK6Z0hQOAO6wbOZhnu54rpxnFeduuVoQnmY9vYooAqIgbUouRe5J0xxQBVOtICGaySUj5KBElVkXZMD0AQDIM23k4VziXmALATTZ7e9sZfY+ce/JIZm17Oine8Nh9GgDmJesKKQtIVmYWV4k+AOSqu9nbOxSGDBJSJKIAAPc5iWskpgBws28zGsvrwn5u6fGmPG4eATBv7ivUa5Lx2LqmB6Bqzzd7e9WvBStLSJkO+p1Yfr+RiAIAPOwLvcQUAN4JX+7j98lhJsOZLPAJ2Kza9qS4w0N4ShyAmoyFYLHn30IAQMaOa79+8tWyf2FMRGlmCShD+x8A8EjduIXzi0l4fbF+cjYSEoAq5dQ+ZmFJI7HFyWZvL97Iz6Ek/UaKu7U3XxKGlih8NofhpVN5GMbhODW2NwAAAPwqfk+MRTp2ag3A0hJSJKIAAIs+qQvnG/FcQ2IKQH2eZjSW10v4+VuZvNfYtseam68tIVj6cagrDKoAAAAAfCRWmR2+PX81qvHNL7xlz3TQ37rWmmdofwMAFqjTzBJTfg6b8w6ACoQv9PHY381kOIts13NlnFH4t1P8AQBWeT7YFYWqXWa+f6paB0B0FNaEKh8cWVhCynTQj+Xzz8Mff2wkogAAy9Vp3iem7IfNl3+A9qqiXc+VlPAyEX8KdykEAMCc/JT5+FStAyCK9yiOa3zjc09IuZaIEreufQsAWKFO2I7CFhNTDiWmALTSs4zG8npJv+c0o/f81C7IA/wkBAAAAFRma7O3d1Tbm55bQopEFAAgYzER5XkjMQWgVVKp004mw1lGu54rrzOahq1aS87yKF8LAQAwJ78RAgAKsl9bu8FHJ6RMB/2hRBQAoBASUwDaJafqHEtLEsmwbY8qKXkaZ35OBgDzciEEVesIAQCFebPZ26vme/GDE1JSIsrPzazXUdd+AwAU5HpiynHYOkICUKRhRmMZLfn3nZoHAIB3ybqXokDG++dYFAD4SLw/8aaWN3vvhJSPElE69hcAoPATv2EjMQWgOJu9ve0mnyoLF2/PX02W/DtzatuzkeYDAAAAgC/rbvb29mt4o3dOSJGIAgC03LCRmAJQkm8zGsvSk0MybNvzrV0SAAAA4M6ONnt7W21/k59NSJkO+hthOwzbXzQSUQCAOgyb94kpW8IBkJ/UZ3eY0ZBOK/u9N66fNfU/5tE6QgBARVxbWKyuEABQsOO2X0+5MSHlKhEl/DFWRHne5FMGGQBgWYZh+zGcE52HrSscAFnJqT3MKtr1XHltXvjcvpnx2DqmB4CK1j33VwCA28TE1aM2v8EPElIkogAAfKIbtnOJKQBZeZbRWFaWFJJh256nds2s/OucB6eiDgBzdpn5utcxRQuJa+7VZ8ZmCYA7iFVnW/uQz7uElOmg3wlbzLyRiAIAcLNuIzEFYOXSxfycLjyfVv77P1gr3WzhHrQvAGCeLjMfn3OkxXAvC4C2OG7rNZW16aB/3MwSUfYt3gAAX9Rt3iemdIQDYOmGGY1lle16rmjbw637Z+bjcx4FwDz9lPn4JGIuRjfz8U1MEQB3FPM0jtv4xtZcAAAAeJBuI5kXYBVyaguz8mSQDNv2PLOLZsOT4gBY9/LxG1NUZVz/3BQBcA+x8uxh295UTEj5wdwCANzf+snZhSgALE/qEd/JaEinxvGJTponVm+S+fiemCIA5ij37+fOj+qM68QUAXBPzzd7e902vaGYkDI2rwAA9+YcCmD5cqq+kUO7niu5te15alddvYz2z9u4MQfAPFn36iQhBYA2Ot7s7bWmOntMSPFkLwDA/akyB7B82xmNJZskkAzb9gztqtnI+ZrPxmZvr2OKAJjT+dAk8yFuqCI3X4U8Pe7+GwAPEb8rH7flzaytn5xdWhQBAO5tLAQAy7PZ24vJKDk9HXKaWYhyGs9Gmi9W7zLz8XVNEQAVfU+XkFLXecTl2/NXl6YJgAfa3uzt7bfhjaylVwkpAAD34/wJYLlyagNzkeFTuLm17fnWLpuF3Cu6PTFFAMzRJPPxWffqiqfrRgA81vM2VFi7SkhRch4A4O4uUpU5AJYg9c3Vruczcmzb06Z+xwWbZD4+lXQAmKefrHtV6WY+PvfdAPI0CtuLQsYar6sU37rnq/Q6tu8BANyZcydomp4QsES5XbwfZRqn2LZnP7N5G9l9Vyr3J3Nje6etlFAFtPtYdFDh+/YQg3XPurcghbSHNM8AmZ6XxpZqYS2JlV1LqD6yFcZ6FMZc7Pn0u4SU9ZOzyXTQjyfInl4CAPiyn4SA2oUvQWNRYImeZTSW04x7wcfKLTklpMQ2SyO770qP1Rebvb3chxn3EzdsoN0unTuyrO8oBax729a9uSihPaR5BsjvuNy7dk1nJ2w/NmXkR+yHc5wfwthPSwz8V9f+PG6UjAMAuIuxEAAsR/jC3WnyemJlO4zpFzNzJ904f2/PX02EYuXnLd2MxxevRR2YJgAqWfdiIsWhaXr8eWbm45s4BwbIysfJKDGRdbLZ24ute44KeQ/HYbzjjB+SutXatT970hcA4MsuY3U5YQBYmqEQmD8eJfenczubvb2uaQJgTn7IfHyx7P6WaXq41K6nk/kwx2YKIKvvxL2bEjnCv3vZzNoflyBWcnlT4gSsWSABAO7FORPAcj0VAvPHo/xgPwHAd3brXouU0K7nB9MEkIVbk1Gu2Q1bKVVHYiXa/dIm4deElPWTs7F9EgDgi1xUAFiS9PRoRySK1vEU8MqNCxjjMOwnG6YKgMd6e/4qrnu531QamqkHfz/YKCR+Y7MFsHJ3SUZp0n/fLeh9HZV2nWXNIgkAcO8TWQCW45kQmEceJ11cK+H8Zd9sATAn48zHt7HZ2xuapgcpIW4X4fxrYqoAVip+D975UjLKte/NsW3Py4Le35uSHur46uOFMmxd+ygAwM1UlQNYqm0haM087grDSsXzl9yfoIrtCw5LDfDb81e9VY9hs7f3i10d4J3vCziPjOveyFTdWwmJzmPTBLBSMQml94DkwBfNLE+ihOojnbAdNYVca/m4QooS9AAAtxsLAcBybPb24k0ELTzaYSPNJ6tTwvWejqfFAZiT0wLG2A3rXtdU3ev7QTxP6BQw1NdmC2BlrpJR7l0ltMDWPcNSrrVo2QMAcHeSdwGW56kQmE/mI5UfvixgqM/NFgBzWPfimldCUop1r33xmjzkJigAc/HgZJRr5xDx/31R0Hs+3uztdXIf5AcJKesnZ3GiJvZXAIAbuagAsASpD66KGu2yXVJ/45YaFzDGWCXl0FQBMAffFzBGVVLu/v1g2JRRHeXUbAGsxKOTUa6En3HYlFPEI15neZP7INdu+Hdj+ywAwI2cJwEsx1AIWkmS0Wp9X8g4n0leAmAOSkkMODJVd1JKNRntegCWb27JKNfsNmVUGY22cn+w46sb/t1P9ltYvb/6578vevy//Lt/v9j4/O9vWzPXf/gnv7PDQxkmqZocAIunvUs7PQvbSBhWJt6YOy5gnDEZJd6c2zVld6eyDMCHYtuecGyMa1/uCbHxJtIwjNc50ufXuE4BQ9WuB2A1duZ9/A0/bxLWn4NCvkNHz8N4x2Hc4xwHd1NCyth+C6v3b/6X/1kQPuPf/5N/2pr3sn5yZkKhDM6RAJYg9b7dEolWijdcOvHCjlAsX7oxN2rKqEA0DGN9nevFtAyPm3FOn4sEwCditYoSKrQdxeSZuFabshu/GzwrZLjfmTGApdtd1PfGmCwa1qFvm3KqvR6H8X6T4/nEJy171k/OYgaREx8AgA/9IAQAS/FMCFptKAQr9X1BYz3WuufLUjLKsUgAfOrt+atYIWVSwFA3HMtvPx9I8SnBqekCWKrdJVQYK6l1TyfX84m1W/69smIAAM6PAFZhWwhaTTumFUo35lxMawnJKAB38rqUc+BwXHce/OE6tx9euoUMd6QKIMBSLSMZpUnVRnYKist2Wj+zcltCiieAAQDeu0xV5ABYoPCluduU0R+eh+uEedaSabVGBY11OyVd8OnxMsZFMgpAu9a949Sixjo3O18sqR3da7MGsDRLSUa5kloCvSwoPs9zu+5yW0LK2L4MAODcCGDJVM+og7ZMq/VdYeM9lsT0IckoAHeXqlaMChlubE3zxjq3d9XCqJRWPRfpZiUAizdeZjLKtfOJg6acCurZtQK8MSFl/eTM4gkA8N5PQgCwFMqUm2cWLN2YOy1s2OeeGJ+RjALwICVVr9gKx/raj/Px/ZeUjPqdjxhAFXYLO584ymUwa5/5b8rSAwDMjIUAYLHSTdYNkajCRphvSSmrVdqNk3dPjKcnpms+TsZe4JJRAO4pVa8o6Xv9MB3za1zr4jpX0nniZBVP6gOwkvOJmDtxUNCQ93O59vK5hJSxXQsAQPU4gCX5Vgiqoj3TCqUbc5PChh2flD6vNSkl3aA7+v/Zu3vfSK50P8C1cwVcGAbKjJzeFiY1IE7sYJqpQVgzgGOKzAZOJCYGHA0ZGXAiTmJsplb9A0MBlTlgKVjcwMFSwE0X284uYBjmEtjAsK/lOtOHq9nRfPCjqvqcOs8DFFrapcjqt053VXf9znmNXoB7O81sf7+Nge2SznXh+R4aVwAk/Fn6rMorQ/FdCp+hPxZIsTQ9AIBV4wBGFz8cWzGjLM9KX+0iATneQCkulBKea7/9vsrvBh1AUjJcJSX4rpRQSqYt6ayOAlCm0LrnKpN9fbPa6LZ3wgopAAAf55oIYHyHSlAkIaQtijdQ1hnu+k0oZXfux6h/jsv+4Y/xOQPwcDmGMWcfSumf30mVZ0s6q6MAlPlZOnyOPspol5fbbgX4wUBK3bShmGvDCgAo3I9KADA67VvK9LUSbF2uN1JuQinLuR6YeHPuotrMaANgAJmukhKEUMos27bFlnQvM9x1q6MAlH1Ncd4/5HQe+HabkzoefeL/t0Q9AFA610MAI+o/EC8qs/9LtRuPP1uS8SopQQhqXGx7ptcY74mxRc9LIxRgFLmGMb/pzw+v59K2bgYt6ayOAsBxZp+nt3Yd8alAihnBAEDJ1nHVOADGY5UMx5/tyv2GSpjpdTGHcFNcFUWLHoARxVVSzjPd/dDu8Pe5rxA2g5Z0ndVRAOjPBVdVXq17wmfmray4ZoUUAIAP65QAYHTPlMDxZ3viDZXcv/9ZVpsbdFmulhJuzPVbuDFnVRSAaRxnvO+LarNC2EmG57ud2Hoo95Z0VkcB4ObzdJfZeeGwPxcfTv1HPxpIqZu2M5QAgIL9pAQA44mzIxcqUbRF7rN8Z+J4Bs8h3Ni6WS0lizEVgyjhptyF90KA6fzh4rfrKv9QwcsQZszpnNc/hBY9ubfaW8WbjwBwc11xUuU1yePbqVcYfXSLn3FyBQBK5ToIYFxfKQHGwfbFGytzue5ZVpuZ469TbePzThBlaQQCbMVZv60zfw6LeM67SPict5hR+DK0Zjj20gHgPY7ieSIHYTLH6yn/4Ge3+JkffTgGAEpUN632hQDjSrldy+dx9uwsxCVZv0t4HBx5OWxdOAZ/nNn7y7N+7Hf94+m2ZzOHNgVxn77ut13DDWC7+vPCVf/eHM59FzN4OstwDu+fz6p//D6FFTxiQCa0ojuc0bA5DuPGqweA91xXXPbnvrD62reZ7PJuaP8XV3cZ3W1WSHEjBgAoUacEAOOJAYlUe8dfzimMEp0nvG872+hhzF+bSfuC91lWm9nj4UbdydQzyPu/F0IxIQz2v6pNKEwYBSCdc1/43L+a0VM6jOe834drqxiGnPKctxP/bgj5/LGaVxil68fLyqsGgI9cV4TV17qMdvnlVK3/brNCSmcIAQAF+lEJAEb1ZcL79v3cih1nAYdQyrOEx8PKy2Lr4yQENkILpcUMn154TmGmdvjSbV1tQlrheq8bcrZz/EIvhE6eVmmvAgXARmjBspzZuS+ch0II8rt4/fdDPN+th/5DMei5jNdy4XFnhmMkXCdYzQ+A23hebUKZuZwPQ6vbz8deAeyTgZS6aa+uD/YvKzM4AICydEoAMI74xXXKN2rPZ1r6HxKue1hFYscy6EmYS/uCjwnvQd/ErYoBlfDd10/V5qbTzWrB63dv3sXZ5jffkd3889/F37k0fADyMrPWPe+9xrq5/nvnfBcer+7S3uetWdTh8Yt4DlyUcG00w9UT2Z6v+tfSU2V4kLCi6bEykPh1xetMdjl8pg0h1udj/pHPbvvirgRSAIDCPtwoAcBoUg6jXM74C+cQtPku4f077LczL4/tCjemHu+9CMfhm4Ke9iJuv3pv6mthUAA49832fPfOee5NSOWd/2ZZ+PBY9ePj3KuEEV6HwHyvK84zu64IE4S+iS2HRvHolj9nyXoAoCSXYZU4ZQAYzVcJ79v3cy16XH3k3LjgFmMlzDgUzgXAua8sYVLy8p2tZGE8WIUBgPs47bd1RvsbWtuOtjjJbQMpvoQAAEri2gdgJPEDbsorcM59BuQPCe/bbmznRBrCMsMCugCU5LlzH1EYB0faSQJwH/H88TyjXX7Tuie2qB3crQIpddNeuhADAApidTiA8aS8Csbl3PvD989vlfjn+6+9RJIZK2YFA1DauS9cBx6pBOEaKF4LAcBDPlOfZrTLYfLYyzF+8aM7/Gxn6AAAhXDdAzCeZwnv2/eFHINz44PbiAGmlUoAUNC5L1wnnapE0c7iNRAAPPS64qTKazX2bx7vvRj8e5m7BFJ+MmwAgAJc1U27VgaA4cUPtYuEd/G8kEORctueRT9Oll4tSQmrpJghDEAx4s2jlUoU6bw//laIA2BIubUEHLx1jxVSAABc8wBM5cuE92327XpuxJm/KX8Z8pWXSlLj5ab3tVbOAJREILM84Xhr2QTA0J+p11Veq6+FMMrrIX/hrQMpddN2hgwAUIAflQBgeHF2hXY96dC2h1uLX6DtVUIpAJRz7ruK5761ahQhhFH24nEHgKGvK86qvFblXT7ee3Ey1C97dMef7wwZAGDmzIACGEcIGewkvH/nhR2PlNv27Dzee3HoJZOWP1z8NlwjWcIegJLOfVYJK0M4vkfCKACM7Ciza4qXj/de7A7xi+4aSHGDBgCYNavCAYwm5XY9XSntem7Etj1r44U7jptVZSl7AMo6971ZOaMSSpmrNyvhxOMMAGNeU9wEXXPyOq54/CB3DaRYwh4AmLNOCQCG1394XVTa9aQo6bY9cdyQGKEUAAo89wmlzJMwCgBTX1N0/cNZRru86LdvH/pLrJACAOBaB2BszxLfv/NCj8v3xg33IZQCQIHnPqGUeRFGAWBbTqu87kMcPrSt8p0CKXXTrqu0l/QFAHgIq8EBjOOrhPftvNR+8fEL+LVxwz3Hz6oSSgGgvGsnoZT8CaMAsM3riasMP0t/+5BVbB/d47/pDBUAYKZc5wAMrP/Auts/7Ca8iz8UfohSXh1mN44fEiWUAkCB5z6hlLyF4/e5MAoACVxPnGa0yzv99vq+//F9Aik/GSYAwAyt66b1hRLA8FJf5eK88OPzvfHDQwilAFDguS/cRHpSafubmzdholJXRwQgueuJkyqvCbJh0tDJff5DK6QAALjGARjTs4T37bz0L6QzaNvzzEsoi3G0qswWB6Csc986nvs61cjCqj9mT4RRAEjMUWafo18+3nuxvOt/dOdASt20Ur8AwBz9qAQAw+o/pIYwwSLhXfzBUXrjVcL7tojjiMT94eK3XbW5MbdWDQAKOfdd9Vs4961UI2nH/XGymhsAKV5LhM/Px5nt9uvHey927vIfPLrnH+oMEQBgZoRuAYb3ZeL7d+4QZVGHLx2iPLzVwqBTjcmtlABga+e/EHYQeEhPmHEeWvScKQUACV9HhM9yOX0/FcIo393lP7hvIMUMYgBgTq6sAgcwrDhbQrueDMQZOSmfB5/ddfYNWx1PN7PF3fyZzsrMb4Ctn/9W1SaUuVaNJHT99nlcwQ0AUneU2TVE+J7mm9v+sBVSAACsjgIwyofTajNrIlXa9fy17xPet9TDTbzHHy5+G5Ydfl7l1Q87R9oQAKRz7rtZKcwqfNt1GsKxwucAZHQNEc5ZuX2ue/l478XubX7wvoEUN20AgDmx+hvA8L5KfP/cKMirHtr2ZOgPF78N4+rzysSmMYQvLJ9rQwCQ3LkvrBQWAplHlVDm1Nb99qSv/4lSAJDhNUT43JzT57s3rXtus6LtvQIpddOGCymhFABgLjolABhO/2F00T8sE95F7XrekUnbnoUjleXYumnhE1ZM8bobxpsZ+DHwA0Ca579VtVktpVONSZzGc6P7VgDkfP1wXOWVwQgrpLz81A89esAfcCEFAMxC3bSuawCGlXp7Fe163u+VccVY4koebsw9XKjjXgyRAZD2uW8dQ5la2I3nJqR5InAOwEzk1rrnm8d7Lz76fc1DAik/GQ8AwAyYPQMwvK8T3rerOGOVX0t9tYWvHKK8vXNjbq0id3vvqjYteo7dcAPI7vx308JOm7Vhz4vhnGhVFADmdt0QzmvHme32R1v3WCEFACidaxqAAfUfQMNynYuEd1GLiw+IN7lTrs9uHF/kP9bCOAurpYTl9YUrbve+9bkWPQB5X2fFZfitFvZwZ/G8KOADwFyvG84yu14IYZTXH/o/7x1IqZt27UsDAGAGflQCgEGlvoqFdj1518cqKTMRb8ydVJsbcysVea91tWnP89yqKACzOf9dWi3s3sL1wudWCwOgEKF1T07nu+XjvRcn7/s/Hj3wF3fGAgCQOUu7AgzrMOF9u7LCwCelXp9nDtG8xDY+4Yu20MpgpSKb96p+O+3rEm66dcoBMMvz33l4n682N5vWKvJR4fognBOPwnWDcgBQymfleJ2Qk5fvW9n2oYEUM4oBgJyt46pvAAyg/9AZwgI7Ce+iMMonZNC2ZxHHGfMbe+8GU0qd+Rye++dx9RgA5n/+WwmmfPKcKIgCQKnXCedVfhM3Xj/ee/FX3w0+NJBiRjEAkDPXMgDD+jLx/dOuZx51+tIhmq93ginHVTk351bVLzfdtCEAKO/8dxNMCa18uoJLEc6BZ5UgCgDcyO1z8aLfvnv7f3hQIKVu2s4YAAAyZrU3gIHE2Q+HCe+idj23FG6IVGmvTvHs3dk2zHIchtfs2Vs351YzfJpvWvNUbroB8Mv5L7Ty2avKWzEsTBg6iufEY+dEAPjls3GVX+ue8L3N4c2/fDbAL+z6bWk4AAAZ6pQAYLgPm4nvnzDK3et1mOi+7cTxtnKYyhDDZOeP914cx2P/ZQbvOZ+6Bv0+hr8A4H3nvnW1ufl0FG/o5H7ue591vOZ8JYACAB+9Luj664EwmeFlRrv9bb/PXTjHDxFICTOLl4YCAJCbumm17AEYzleJ7592PXev12Hi423lMJUlzgwLx30VV8m5Cacsq01QKWXhuvP7fjt30w2AO57/cj33feh8+EM8H/pOBgBufz1w0l8LhGuA3Ux2OVynvO63J0MEUlw0AAA56pQAYBj9B+JFlfZEBe167ijUqz+u4eZ/qjc6lmHcubFf9Bj9Szglvg+FL+XCTbovqjRu0l3F681w060zVgEY4dy3jOe8pwlfi6/j+TBMbD6PzwEAuJ+wetpFlU8odbe/Xvl2qJY9AAC5+VEJyMCpEpCJncTH69ohupfQHmWR+LiDN+Is679MmopBud24PY3jZayZZFfxb4ftp/C4pVnf234f7ozErZ/rThPeN2D4c1/39ntvDGcu++3v4jlvOfEuXcbX+09xvy4FUNiSsCqd7/3mfc2D68piP/f25/ujKp9VUt74zc8///zgX3J9sP/HKu0vqSjc3/7bf1P97b/791ntc/+6cuAKUTdt8vv4T//wu+rP//k/OVjMzfP+9We2PABAQWJQJWzvBlS+qD4dcgo32v701j+/CaK42QZAwue9m/Pd2+e9p2/9yG0Dm91b/7zut/9e/RLIvNJ+BwD4kM8G+j3hYuRQOQGAjHRKAABQltg6Zx3/VTgZgLmf925ayDnvAQBb8Wig32PpKwAgJ5d105rJCgAAAAAAMJKhAimWYwMAcuLaBQAAAAAAYESDBFLqpr3pmwsAkAOruwEAAAAAAIzo0YC/y0xjACAXnRIAAAAAAACM57MBf1eYabxUUlL0//7n/6j+6R9+pxAABFd1066VAQAAAAAAYDxDBlK6fnuppKTo//zuv73ZAKCyOgoAAAAAAMDoBmvZUzdtp5wAQAZ+UgIAAAAAAIBxPRr4910qKQCQuE4JAAAAAAAAxjV0IKVTUgAgZVZ1AwAAAAAAGN/QgZQflRQASFinBAAAAAAAAOPTsgcAKIlrFQAAAAAAgAkMGkipm3bdP6yVFQBIlNXcAAAAAAAAJvBohN9p5jEAkKpOCQAAAAAAAMY3RiDFzGMAIEXrummvlAEAAAAAAGB8YwRSOmUFABLkGgUAAAAAAGAigwdS6qbVsgcASNFPSgAAAAAAADCNRyP93k5pAYDEuD4BAAAAAACYyFiBlB+VFgBIyJVV3AAAAAAAAKYzViDFDR8AICWuTQAAAAAAACakZQ8AUAKrtwEAAAAAAExolEBK3bRXlZnIAEA6OiUAAAAAAACYzqMRf7dACgCQhLppO1UAAAAAAACYzpiBFEvjAwApEJIFAAAAAACY2JiBlE55AYAEuCYBAAAAAACY2GiBlLpp1/3DlRIDAFv2kxIAAAAAAABM69HIv79TYgBgy1yPAAAAAAAATGzsQIoZyQDANq3jqm0AAAAAAABMyAopAMCcXSoBAAAAAADA9EYNpNRN2ykxALBFPyoBAAAAAADA9B5N8Dc6ZQYAtsQKKQAAAAAAAFswRSDFjSAAYCus1gYAAAAAALAdUwRSLJUPAGxDpwQAAAAAAADboWUPADBXQrEAAAAAAABbMnogpW7aq/5hrdQAwMS0DQQAAAAAANiSRxP9nU6pAYCJuf4AAAAAAADYkqkCKT8pNQAwocu4ShsAAAAAAABbYIUUAGCOtOsBAAAAAADYos+m+CN104abQr8pscDXB/vf9g/fGGoAbEFYIeRzK4UAAAAAAAAwtUdKMLrTanNDEAAmPwcJowAAAAAAALANAikjizcCj1UCgIld9uegM2UAAAAAAABgGwRSJlA37ap/6FQCgAkJQwIAAAAAALA1AinTcWMQgKms6qbtlAEAAAAAAIBtEUiZSN20l/2D1gkAjE2rOAAAAAAAALZOIGVap/22VgYARnRcN+2VMgAAAAAAALBNAikTijcIzVoHYCxdf65ZKQMAAAAAAADbJpAysbppz/uHc5UAYARHSgAAAAAAAEAKPlOCrQg3DJf9tqMU03j9539R/dc//7Os9vm//Mt/zGp///l/+I8GGmzXad20a2UAAAAAAAAgBQIpWxBa91wf7J/2//itakzjH//v31R//78N9zH9zb/614oA23PZn1tOlAEAAAAAAIBUaNmzJXXTnvUPnUoAMACtegAAAAAAAEiKQMp2hRuIV8oAwAOEVj2XygAAAAAAAEBKBFK2qG7adf9wqhIA3JNWPQAAAAAAACRJIGXLtO4B4AG06gEAAAAAACBJAilpeF5p3QPA3WjVAwAAAAAAQLIEUhJQN20Io5jlDsBtdVr1AAAAAAAAkDKBlETUTXveP5yrBACfIMQIAAAAAABA8gRS0hJuMK6VAYCPOK6b1rkCAAAAAACApAmkJETrHgA+4bw/V6yUAQAAAAAAgNQJpCSmbtqufzhVCQDesa6EFgEAAAAAAMiEQEqC6qY96R86lQDgLc/jSloAAAAAAACQPIGUdD3vNzceAQiO66a9VAYAAAAAAAByIZCSqDgL/rlKABSv688JZ8oAAAAAAABATgRSElY3bdc/nKoEQLHWlXAiAAAAAAAAGRJISVzdtCf9Q6cSAEV6HlfMAgAAAAAAgKwIpOQhzI53QxKgLMd1014qAwAAAAAAADkSSMlAnB2/pxIAxVj17/1nygAAAAAAAECuBFIyEWfJH6kEwOyF9/tjZQAAAAAAACBnAikZqZt21T+sVAJgtsKKWM/jylgAAAAAAACQLYGUzNRNG1ZJuVQJgFkKYZS1MgAAAAAAAJA7gZQ87VWbWfQAzMdx3bSdMgAAAAAAADAHAikZiq0chFIA5mPVv7efKQMAAAAAAABzIZCSqbppQ9ueY5UAyN5lbMcGAAAAAAAAsyGQkrG6aVf9w6lKAGRrXW1WvAIAAAAAAIBZEUjJXN20J/3DSiUAshParj2PbdgAAAAAAABgVgRSZiC2erhUCYCsPI/t1wAAAAAAAGB2BFLmI7R8cGMTIA9HddN2ygAAAAAAAMBcCaTMRGz5EFZK0foBIG2n/Xv2ShkAAAAAAACYM4GUGYmtH8JKKUIpAGla9e/VJ8oAAAAAAADA3AmkzEwMpRypBEByQhjF+zMAAAAAAABFEEiZobppzyuhFICUhLDgsTIAAAAAAABQCoGUmaqbdlUJpQCk4E07tf59WTs1AAAAAAAAiiGQMmMxlHKqEgBbI4wCAAAAAABAkQRSZq5u2pP+YaUSAJMLIRRhFAAAAAAAAIokkFKAumlD656VSgBMRhgFAAAAAACAogmkFEIoBWAyN2GUS6UAAAAAAACgVAIpBRFKARidMAoAAAAAAABUAinFEUoBGI0wCgAAAAAAAEQCKQUSSgEYnDAKAAAAAAAAvEUgpVBCKQCDEUYBAAAAAACAd/zm559/VoWCXR/sf9c/HKoEwL0IowAAAAAAAMB7CKQglAJwP8IoAAAAAAAA8AECKbwhlAJwJ8IoAAAAAAAA8BECKfyFUArArYQQyvO6addKAQAAAAAAAO8nkMJfuT7YNyAAPu6obtqVMgAAAAAAAMCHPVICblwf7C9UAeCTvlACAAAAAAAA+DiBFN62VAIA75UAAAAAAADwUAIpvO2pEgB80u71wf6OMgAAAAAAAMCHCaTwtl0lAPB+CQAAAAAAAA8lkMIbcba/G6wAt7NUAgAAAAAAAPgwgRRuCKMA3J4WZwAAAAAAAPARAincWCoBwK0J8QEAAAAAAMBHCKRww2x/gNvbuT7YF0oBAAAAAACADxBI4cZSCQC8bwIAAAAAAMAQBFKozPIHuJcvlAAAAAAAAADeTyCFYKkEAN47AQAAAAAAYCgCKQRm+QPc3eL6YH9HGQAAAAAAAODXBFIIlkoA4P0TAAAAAAAAhiKQUrg4u3+hEgD3sqsEAAAAAAAA8GsCKSyVAODenioBAAAAAAAA/JpACm6mAtzfUgkAAAAAAADg1wRS0G4C4AGuD/aXqgAAAAAAAAB/TSCFpRIAPIhgHwAAAAAAALxDIKVgZvUDDELrMwAAAAAAAHiHQErZzOoH8F4KAAAAAAAAgxNIKZtZ/QAPt7g+2F8oAwAAAAAAAPxCIKVsSyUA8H4KAAAAAAAAQxNIKVSczb+jEgCD+EIJAAAAAAAA4BcCKeVaKgGA91QAAAAAAAAYg0BKuczmBxjOrhIAAAAAAADALwRSyrVUAoDhXB/se18FAAAAAACASCClQNcH+zuV2fwAQ1sqAQAAAAAAAGwIpJRJGAVgeE+VAAAAAAAAADYEUsq0VAKAwQn7AQAAAAAAQCSQUiaz+AGGt3N9sC+UAgAAAAAAAJVASqncMAXw/goAAAAAAACjEUgpTJy9v6MSAKOwAhUAAAAAAABUAiklWioBgPdYAAAAAAAAGJNASnm+UAKA0SyuD/atQgUAAAAAAEDxBFLKs1QCAO+zAAAAAAAAMCaBlILEWfsLlQAY1a4SAAAAAAAAUDqBlLIslQBgdE+VAAAAAAAAgNIJpJTFrH2A8S2VAAAAAAAAgNIJpJTFrH2ACVwf7AsAAgAAAAAAUDSBlLIslQDA+y0AAAAAAACMTSClENcH+0tVAJiMFakAAAAAAAAomkBKObSPAPCeCwAAAAAAAJMQSCmH2foA01lcH+wvlAEAAAAAAIBSCaSUw2x9AO+7AAAAAAAAMAmBlALEWfoLlQCYlJWpAAAAAAAAKJZAShmWSgDgvRcAAAAAAACmIpBShi+UAGByWvYAAAAAAABQLIGUMiyVAGB61wf73n8BAAAAAAAokkBKGczSB9iOpRIAAAAAAABQIoGUmTM7H2CrtEwDAAAAAACgSAIp87dUAgDvwQAAAAAAADAlgZT5e6oEAFuzc32wr20aAAAAAAAAxRFImT83QgG8DwMAAAAAAMCkBFJmLM7K31EJgK2yUhUAAAAAAADFEUiZN7PyAbwXAwAAAAAAwOQEUubNrHyA7du9Pti3WhUAAAAAAABFEUiZt6USAHg/BgAAAAAAgKkJpMxUnI2/UAmAJGjbAwAAAAAAQFEEUuZrqQQAydBCDQAAAAAAgKIIpMyX2fgA6VgqAQAAAAAAACURSJmvs3476re1UgBs1arfPlcGAAAAAAAASvKbn3/+WRVm7vpg/7B/eNlvC9XgFq767TKOF2PmF52acEerfjutm3atFAAAAAAAAJRGIKUgginc0lHdtKu3xk1o/7RTbdpAhccv4uNiZmOpi48hjPOn+PgmnNPX4yrWIjzvi0pLLD4uvH4EUQAAAAAAACiaQEqBYjDl68pNdX7trG7a43uMqWX8x513xtXTd370JtQytpswydv//qf4z+vql1ZW67uGBmJA52Ki50E+wnh7FV9DV8oBAAAAAABA6QRSChZDBGHFlKVq0Ovqpt3b0li8b1Dlchs3//v9fdY/vDZkqARRAAAAAAAA4L0EUhBMIVj32xM31O/0ujmJrxvKJIgCAAAAAAAAHyGQwl8IphQr3Ezfq5v2Uinu/JoJq6Q8U4mirPvttN/OBVEAAAAAAADgwwRS+JXrg/1FtQmmHKpGEY7qpl0pw71eK6HN0EW/7arG7K377dRrBQAAAAAAAG5HIIUPEkwpQmg3cqwMD3qdhDBKCKXsqMYsrStBFAAAAAAAALgzgRQ+STBltrq6afeUYZDXSGjb81ol5vX66LfvBVEAAAAAAADgfgRSuLUYTDnst68rq0Hkbt1vT+qmvVKKwV4fJ9UmuEXeumqzIkqnFAAAAAAAAHB/Ainc2fXBfgijfFMJpuQqhFD26qa9VIrBXxthlZRnKpGlrhJEAQAAAAAAgMEIpHBvginZOtKGZNTXxEW/7apGNs777ZUgCgAAAAAAAAxLIIUHizfhD6tNMGWhIkk7q5v2WBlGfT2EMEoIpQhppW1VbVZEWSsFAAAAAAAADE8ghUFdH+wf9g8vK8GUFHV10+4pwySvg9C257VKJGlVCaIAAAAAAADA6ARSGIVgSnLW/fakbtorpZjsNXASXwOkYVUJogAAAAAAAMBkBFIYVQymhFY+u6qxNSGEslc37aVSTD7+wyopz1Riq2P/VbVpVSWMBQAAAAAAABMSSGES1wf7y2qzWsRSNSZ3VDftShm2Mu53+oeLSiBraoIoAAAAAAAAsGUCKUxKMGVy4Yb8sTJsdcyHMEoIpeyoxugEUQAAAAAAACARAilshWDKJLq6afeUIYnxHtr2vFaJ0az77bTfzgVRAAAAAAAAIA0CKWzV9cH+otoEUw5VY1Drfnvi5nxSY/0kjnWGHeenWlIBAAAAAABAegRSSIJgyqBCCGWvbtpLpUhunIdVUp6pxIOtK0EUAAAAAAAASJpACkkRTBnEkRv1yY7vnf7hot92VeNeun773vgGAAAAAACA9AmkkKQYTDnst6/7bUdFbu2sbtpjZUh6bIcwyoVxfSddtVkRpVMKAAAAAAAAyINACkmLK0p8Uwmm3EZXN+2eMmQxrkPbntcq8ekxXQmiAAAAAAAAQJYEUsiCYMonrfvtSd20V0qRzZg+qTbtqfi18357JYgCAAAAAAAA+RJIISsxmHJYbYIpCxV5I4RQ9uqmvVSK7MZzWCXlmUr8xararIiyVgoAAAAAAADIm0AK2bo+2D+sNitMLAovxVHdtCsjIssxHAJWF/22W3gpwvgVRAEAAAAAAIAZEUghe4UHU87qpj02CrIevyGMEkIpJbaiWlWCKAAAAAAAADBLAinMRgymhFY+paw20dVNu+fIz2LshrY9rwt5uqHF1Kt+WwmiAAAAAAAAwHwJpDA71wf7y2qzYspyxk9z3W9P6qa9csRnM25P4ridq5sgyplxCwAAAAAAAPMnkMJszTiYEm7m79VNe+koz27MhlVSns1wvAqiAAAAAAAAQGEEUpi9GQZTjuqmXTmysxyrO/3DRTWPtlPr6pfWPIIoAAAAAAAAUBiBFIpxfbAfbvJ/3W+HGT+NsMrEsaM5+3EaQik7mT6Fdb+dCk0BAAAAAABA2QRSKM71wf6i2qyYcpjZrnd10+45gkWM0dC253Vmu72uBFEAAAAAAACASCCFYmUWTFn32xOtT4oanydxfKbust9eCaIAAAAAAAAAbxNIoXgxmHLTyifFNikhhLJXN+2lo1Xc2AyrpDxLdPe6arMiSudIAQAAAAAAAO8SSIHo+mA/hFG+qTbhlJSCKUdWnyh6TF70225Cu9VVgigAAAAAAADAJwikwDsSC6ac1U177KgUPR5DGOUigbHYVYIoAAAAAAAAwC0JpMAHvBVM+arfFlvYha5u2j1Hgn4shrY9r7f051fVJoiydiQAAAAAAACA2xJIgVu4Ptg/7B9eVtMFU9b99qRu2ivVJ47BkzgGp7KqBFEAAAAAAACAexJIgTuYKJgSQih7ddNeqjjvjL+wSsqzkf/MqhJEAQAAAAAAAB5IIAXuYeRgylHdtCtV5j3jLrSRuui33YF/dQhBveq3lSAKAAAAAAAAMASBFHiA64P9ZbUJpiwH+pVnddMeqywfGXMhjBJCKTsD/LqbIMqZ9lAAAAAAAADAkARSYAADBVO6umn3VJNbjLfQtuf1A36FIAoAAAAAAAAwKoEUGNADginrfnsiHMAdxtpJHGt3HWc3rXmMNQAAAAAAAGA0AikwgthW5et+O7zFj4dgwF7dtJcqxx3HWVgl5dktfnTdb6f9GFupGgAAAAAAADAFgRQY0fXB/qLarGJx+JEfOxIU4J7ja6d/uOi33Q/8yLoSRAEAAAAAAAC2QCAFJvCRYMpZ3bTHKsQDxlYIo4RQys5b/3NYbeeVIAoAAAAAAACwLQIpMKEYTLlp5XNZN+2eqjDAuApte0L7nq7arIjSqQoAAAAAAACwTQIpsAWx1UpVN+2VajDQmFr042mtEgAAAAAAAEAK/r8AAwDH4JafkIq3BAAAAABJRU5ErkJggg==" /></defs></svg>
+    
+            </a>
+            </div>
+        </div>
+                    
+
+        <div class="g-block size-70 center nopaddingleft nopaddingright">
+             <div id="menu-8129-particle" class="g-content g-particle">            <nav class="g-main-nav" data-g-hover-expand="true">
+        <ul class="g-toplevel">
+                                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-post_type g-menu-item-184 g-standard  ">
+                            <a class="g-menu-item-container" href="../index.html" title="						">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Hjem</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-post_type g-menu-item-214 g-standard  ">
+                            <a class="g-menu-item-container" href="../index.html@p=206.html">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Om oss</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-post_type g-menu-item-204 g-standard  ">
+                            <a class="g-menu-item-container" href="../blog/index.html">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Blogg</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-post_type g-menu-item-215 g-standard  ">
+                            <a class="g-menu-item-container" href="../index.html@p=208.html">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Kontakt oss</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+        </ul>
+    </nav>
+            </div>
+        </div>
+                    
+
+        <div class="g-block size-15">
+             <div id="button-8992-particle" class="g-content g-particle">            <div class="g-button">
+<a href="../index.html@p=210.html" target="_self"  class="button " title="Finn Fagfolk">
+Finn Fagfolk
+</a>
+</div>
+            </div>
+        </div>
+            </div>
+            
+    </section>
+                    
+                <section id="g-slideshow">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100 blobs">
+             <div id="simplecontent-5122-particle" class="g-content g-particle">            <div class="">
+        <div class="g-simplecontent">
+
+            
+                            <div class="g-simplecontent-item g-simplecontent-layout-header">
+                    
+                    
+                    
+                                                                    <div class="g-simplecontent-item-content-title">Blogg</div>
+                                                                                        
+                    
+                    <div class="g-simplecontent-item-leading-content">Våre nyttige artikler og nyheter</div>                    
+                                    </div>
+            
+        </div>
+    </div>
+            </div>
+        </div>
+            </div>
+            
+    </section>
+                
+                                
+    
+    
+                <section id="g-container-main" class="g-wrapper">
+                            <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <main id="g-mainbar" class="section-horizontal-paddings">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-content">
+                                                        
+    <div class="platform-content">
+        <div class="content-wrapper">
+            <section class="entry">
+
+                <article class="post-type-post post-246 post type-post status-publish format-standard has-post-thumbnail hentry category-blog" id="post-246">
+
+    
+                <section class="entry-header">
+
+            
+                                    
+        </section>
+        
+                
+                        <section class="entry-content">
+
+                                                                        <a href="../index.html@p=246.html" class="post-thumbnail" aria-hidden="true">
+                        <img width="512" height="352"   alt="Bytte tak på gammelt hus" data-src="https://fagfolk.net/wp-content/uploads/2021/08/tommerhus-tak.webp" class="featured-image tease-featured-image  lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" /><noscript><img width="512" height="352" src="../wp-content/uploads/2021/08/tommerhus-tak.webp" class="featured-image tease-featured-image " alt="Bytte tak på gammelt hus" /></noscript>
+                    </a>
+                                
+                                
+<h1>Bytte tak på gammelt hus</h1>
+
+
+
+<p>Denne artikkelen skal prøve å veilede vanlige huseiere av eldre hus, hva slags tak de har, hvilke utfordringer de kan oppleve og hva det innebærer å bytte tak på gammelt hus for å få et sunnere tak.</p>
+
+
+
+<div class="wp-block-media-text alignwide is-stacked-on-mobile is-vertically-aligned-bottom" style="grid-template-columns:56% auto"><figure class="wp-block-media-text__media"><img width="1024" height="768"  alt=""  data-srcset="https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-1024x768.jpg 1024w, https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-300x225.jpg 300w, https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-768x576.jpg 768w, https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-1536x1152.jpg 1536w, https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-2048x1536.jpg 2048w"  data-src="https://fagfolk.net/wp-content/uploads/2022/03/20220316_1010371-1024x768.jpg" data-sizes="(max-width: 1024px) 100vw, 1024px" class="wp-image-327 size-full lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" /><noscript><img width="1024" height="768" src="../wp-content/uploads/2022/03/20220316_1010371-1024x768.jpg" alt="" class="wp-image-327 size-full" srcset="../wp-content/uploads/2022/03/20220316_1010371-1024x768.jpg 1024w, ../wp-content/uploads/2022/03/20220316_1010371-300x225.jpg 300w, ../wp-content/uploads/2022/03/20220316_1010371-768x576.jpg 768w, ../wp-content/uploads/2022/03/20220316_1010371-1536x1152.jpg 1536w, ../wp-content/uploads/2022/03/20220316_1010371-2048x1536.jpg 2048w" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript></figure><div class="wp-block-media-text__content">
+<div class="wp-block-group"><div class="wp-block-group__inner-container">
+<div class="wp-block-columns">
+<div class="wp-block-column" style="flex-basis:100%">
+<p>Undertaket er huden som dekker huset&#8230;.  Her er duken i god stand, mens lektene sliter pga dårlig lufting.</p>
+</div>
+</div>
+</div></div>
+</div></div>
+
+
+
+<h2>Hvorfor bytte tak på gammelt hus?</h2>
+
+
+
+<p>Å bytte tak på gammelt hus kan være en av de beste investeringer du gjør med huset ditt.&nbsp; Det kan også være en av de dyrere investeringer du gjør.&nbsp; Taket er mer enn et pyntet hode på en huskropp.&nbsp; Det stabiliserer husets konstruksjon, flytter snølastene fra store arealer ned på enkelte punkter og vegger slik at vi får levelige arealer å leve på.&nbsp; Taket holder størstedelen av all nedbør ute og beskytter ytterveggene mot både vann og sol.&nbsp; Taket er også den største faktoren for komfort i bygget.&nbsp; All varme stiger oppover og møter Himlingen. Varme og fukt vil da prøve å presse seg opp og ut.&nbsp; Her er kvaliteten på arbeidet avgjørende for resultatet på varme sparing, komfort og bevaringen av konstruksjonen.&nbsp;&nbsp;Sjekk <a href="../index.html@p=182.html">timepris snekker</a>. </p>
+
+
+
+<h2>Få sjekket tilstanden på taket</h2>
+
+
+
+<p>Alle tak har en begrenset levetid, litt forskjellig ut fra materialer som er brukt og stedet hvor taket står.&nbsp; De fleste leverandører snakker gjerne om viktigheten av hvilken tekking taket har; om det er betongstein, teglsten, blikk, skifer osv.&nbsp; Dette er viktig, men som med alt, så er det alltid den svakeste lenken som avgjør styrken på kjedet.&nbsp; Det snakkes om at glassert takstein holder 100 år… det hjelper lite hvis duken og lektene under kun tåler 40 år.&nbsp; Det hjelper lite å sminke taksteinen med maling om duken under lekker.&nbsp; Det ser pent ut,&nbsp; men kan gi huseier&nbsp; en falsk trygghet.&nbsp;&nbsp;</p>
+
+
+
+<h2>Hva kan du selv sjekke?</h2>
+
+
+
+<p>Er taket mer enn 25 år så er det lurt å få en fagperson til å se på taket.&nbsp; Om du er ukjent med takets levealder så kan du begynne med sjekke 2 ting:&nbsp;</p>
+
+
+
+<ul><li>Tekkingen &#8211; Når tekkingen er av betong takstein eller blikk så kan alder ofte sees.&nbsp; Betongtakstein er malt og malingen vil sakte forvitre&nbsp; Den vil miste den opprinnelige fargen og få en grovere ytterflate.&nbsp; Dette tar ofte rundt 15-20 år.&nbsp; I tillegg begynte produsentene med avrundet nese nederst for rundt 30 år siden. Du vil se forskjellen når du erstatter en stein.&nbsp;&nbsp;</li><li>På blikk &#8211; Enten som tekking eller som beslag, så vil du se slitasjen.&nbsp; Varmen og fuktigheten vil etterhvert først gjøre blikk delene matte, og vil enten&nbsp; slite seg videre gjennom slik at du ser materialet under malingslaget enkelte steder eller at malingen løsner i kanten av blikket på grunn av rust.&nbsp; Da har det nok gått mer enn 25 år.</li></ul>
+
+
+
+<h2>Hva ser en fagperson etter?</h2>
+
+
+
+<p>I de fleste tilfeller så vil fagpersonen være en tømrer, men blikkenslagere kan også ta en slik befaring.&nbsp;&nbsp;&nbsp;</p>
+
+
+
+<ul><li>Det første jeg som fagperson gjør er å se på den generelle tilstanden nede fra bakken.&nbsp; Jeg ser etter åpenbare vannskader nede ved takfoten i underkant av grader, overganger og takopplett.&nbsp;&nbsp;</li><li>Deretter ber jeg om å se på loftet og innvendig bebygd loftsetasje for å se om jeg kan finne vannlekkasjer/skader.</li><li>Det neste jeg ser etter er feil ved takfot blikket eller om nederste takstein er nedsenket . Det indikerer at lekten i bunnen er råtten og har falt sammen.&nbsp; Det er vanlig at det samler seg rusk som redemateriale, blader, bjørkefrø eller lignende nederst på ved takfoten.&nbsp; Dette hindrer lufting, som igjen gjør at det blir mer kondensvann som renner ned og suges opp av det samme materiale, og dermed råtner sløyfen og lekten ved takfoten.&nbsp; Det er derfor lurt å bruke fuglebånd, stor sløyfehøyde og impregnerte materialer her</li><li>Det neste jeg gjør er å ta en stige, drar opp til taket, helst på sydsiden, der taket får mest juling.&nbsp; Så tar og skyver opp et par stein i rad nr 2 og løfter ut en stein eller to i rad 1.&nbsp; Jeg prøver å se tilstanden til duken rundt en av sløyfene (oppover liggende lekte).&nbsp; Duken har en tendens til å tørke ut og sprekke opp rundt disse sløyfene.&nbsp; Er dette tilfelle så er det på tide å “bytte tak på gammelt hus”.&nbsp; Det er derfor jeg sa tidligere at det hjelper lite å ha svært holdbare taktekking om duk og lekter under ikke holder.&nbsp;&nbsp;</li><li>Det neste jeg ser etter som fagperson er skjevheter på takflaten, tilstand på gesims og utstikkskasser, vindskier og israfter.&nbsp; Jeg ser etter tilstand på blikk rundt pipe, takhatter, takrenner og nedløp.&nbsp; Dette krever et trenet øye å se slike feil.&nbsp; Noen ganger kan selve taket være ok, men trenger vedlikehold og utskiftninger på enkelte deler for å kunne være sunt kanskje 10-20 år til.</li></ul>
+
+
+
+<h2>Bruk erfarne seriøse fagfolk.</h2>
+
+
+
+<p>Når du skal bruke noen hundre tusen på bytte tak på gammelt hus, så er det viktig at resultatet blir både pent og holdbart.&nbsp; Jeg anbefaler derfor at dere er nøye med hvem dere tildeler denne jobben.&nbsp; Bruk fagfolk, ikke bruk kjæresten til datteren til naboen, fordi han selv sier at han er så flink til masse ting.&nbsp; Spør gjerne om ansvarlig har fagbrev, spør for å se HMS kortet og sjekk firmaet på proff.no om tilstanden er ok.</p>
+
+
+
+<p>Snakk gjennom hvilke løsninger dere ønsker; type tekking, farger og blikk.  sjekk om hvilke muligheter dere har for etterisolering og til hvilken pris.  Om det skal gjøres noe i raften eller det er ønske om å øke tykkelsen og etterisolere isolert loft så kan det være lurt å gjøre dette samtidig med resten av tak jobben.  Få med avretting av tak, møneband og fugleband i kontrakten.  Har dere grader på tak, spør hvilke alternativer de har for avrenning fra gradrenna og ned til takrenne.  Spør, spør, spør.  En fagperson som er glad i faget sitt vil mer enn gjerne dele av sin kunnskap.</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><img  alt=""  width="480" height="360" data-srcset="https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-1024x768.jpg 1024w, https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-300x225.jpg 300w, https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-768x576.jpg 768w, https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-1536x1152.jpg 1536w, https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-2048x1536.jpg 2048w"  data-src="https://fagfolk.net/wp-content/uploads/2022/03/20220303_1153351-1024x768.jpg" data-sizes="(max-width: 480px) 100vw, 480px" class="wp-image-324 lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" /><noscript><img src="../wp-content/uploads/2022/03/20220303_1153351-1024x768.jpg" alt="" class="wp-image-324" width="480" height="360" srcset="../wp-content/uploads/2022/03/20220303_1153351-1024x768.jpg 1024w, ../wp-content/uploads/2022/03/20220303_1153351-300x225.jpg 300w, ../wp-content/uploads/2022/03/20220303_1153351-768x576.jpg 768w, ../wp-content/uploads/2022/03/20220303_1153351-1536x1152.jpg 1536w, ../wp-content/uploads/2022/03/20220303_1153351-2048x1536.jpg 2048w" sizes="(max-width: 480px) 100vw, 480px" /></noscript><figcaption>Over underligger tak.  Her ser vi taket slik det var opprinnelig uten undertaks duk.</figcaption></figure>
+
+
+
+<h2>Over-underligger tak.</h2>
+
+
+
+<p>De fleste tak fra før 50’ tallet er opprinnelig et “Over-underligger tak”.&nbsp; Et typisk tak fra den perioden hadde 5”x7” (<a href="https://no.wikipedia.org/wiki/Tomme">tommes</a>=2,5cm) sperrer med 4”x4” Åser liggende slik at det dannet seg firkanter med 80-100cm sider. På disse åsene ble det lagt oppadgående 1”x6” plank (underligger) med margsiden ned som dannet en renne form ved tørking.&nbsp; Disse ble lagt med ca 4” (ca 10 cm) mellomrom.&nbsp; Deretter ble det lagt nye plank (overliggere) til dekking av åpningene mellom underliggerne med margsiden opp slik at det dannet seg en bue som fikk vannet til å renne ned på underliggerne.&nbsp; Morsomme og enkle navn i denne bransjen…</p>
+
+
+
+<p>Disse undertakene når de var nye, var delvis tette i undertaket.  Deretter kom sløyfer og lekter og takstein/skifer.  Her rant det etter hvert mye vann inn, men siden husene var dårlig isolert gjerne med koks, leire eller sagspon med mye lufting, så var det lite råte som følge av metoden.  Du har sikkert sett i gamle filmer at de dro frem bøtter og kar. Senere kom krav til tetthet og mer isolasjon.  </p>
+
+
+
+<h2>Tetting og isolering</h2>
+
+
+
+<p>Det var jo en løsning på problemet den gang, men ikke nå.  For kravene kom med å tetting av over-underliggerne med D-papp og la noen cm med isolasjon på loftet.&nbsp; Dette var en løsning som dannet mer kondens og hadde mindre lufting og hadde derfor begrenset levetid.&nbsp; Duken får mange heng fra overligger til overligger.&nbsp; Til å begynne med går dette greit, men når den ene sommeren etter den andre kommer med intens varme rett under taksteinen så skjer ting.&nbsp; Når varmen&nbsp; har fått gjort sitt, så tørker pappen.&nbsp; Samtidig tørker lektene og drar og herjer med duken til den sprekker og danner åpninger rundt spikerne.&nbsp; </p>
+
+
+
+<p>Jeg har erfart mye råte med slike tak.&nbsp; For å slippe videre problemer så kan det være lurt å dekke taket med SUtaksplater. Vær bare nøye med å få platene til å ligge forbandt med nok overlapp til at øverste platekanter får ligge med spikerslag og sløyfe på overliggerne.&nbsp; Min erfaring er at det lønner seg som oftest å legge langsiden av platen parallelt med møne.&nbsp; Da utnyttes platene bedre.</p>
+
+
+
+<h2>Sikring ved bytte av tak på gammelt hus</h2>
+
+
+
+<p>Når du skal bytte tak på gammelt hus så er det en selvfølge at det skal gjøres på en sikker måte.&nbsp; Det innebærer et godt stillas, bruk av verneutstyr, riktig plassering av avfallscontainere, store presenninger og enkel dekking av sårbare eksteriør deler og inngangspartier&nbsp; &nbsp;&nbsp;</p>
+
+
+
+<h2>Forklaringer av begrep:</h2>
+
+
+
+<ul><li><strong>Tak/Himling</strong> &#8211; Når jeg snakker om “tak” så snakker jeg om hele konstruksjonen, tetting, lekting og tekking som ligger over den synlige innvendige “himling”.&nbsp; Jeg vet at ordet “tak” på dansk, brukes om himling og at denne bruken er delvis adoptert på norsk.&nbsp; For å hindre begrepsforvirring så holder jeg meg konsekvent til “himling” for det synlige innvendige, og “Tak” for alt over himling.</li><li><strong>Sperr </strong>&#8211; Bærende “bjelke” som ligger fra takfot (ved takrenne) over bærende veggliv og opp til bæring ved møne.&nbsp; Kan også ha ekstra bæring i mellom i form av knevegg eller drager.&nbsp; Sperret tar lasten fra overliggende&nbsp; takbord(sperretak) eller “Åser” (Åstak).&nbsp; Sperretak ble vanlige på 50’ tallet og ble etterhvert erstattet av takstol tak.&nbsp; Sperr må ikke forveksles med “takstoler”.</li><li><strong>Åser </strong>&#8211; Åsene er kvadratiske bjelker som ligger loddrett oppå sperret.&nbsp; Denne løsningen finner du ofte i murhus og bindingsverkshus frem til 50’ da sperretaket tar over og uisolerte driftsbygg på gårder.</li></ul>
+
+
+
+<p><strong>Undertak</strong> &#8211; Tette Lag mellom Ås/sperr/takstol og Taktekking som takstein, skifer, blikk tetting eller tetnings duk.&nbsp; Undertaket er i de fleste eldre hus en form for vind og vannavvisende duk oppå trebord som under/overligger på Åser eller underpanel på sperr/takstol.&nbsp; På nyere bygg finner du også finèr/OSB plater eller kun damp-åpen duk direkte på sperr.</p>
+
+
+                
+                
+                                
+                
+            </section>
+            
+                                    
+        
+    
+</article>
+
+            </section>
+        </div> <!-- /content-wrapper -->
+    </div>
+
+    
+            
+    </div>
+        </div>
+            </div>
+            
+    </main>
+        </div>
+            </div>
+    
+    </section>
+    
+                    
+                <section id="g-expanded" class="section-horizontal-paddings section-vertical-paddings-large">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="custom-5706-particle" class="g-content g-particle">            <div class="asl_w_container asl_w_container_1">
+	<div id='ajaxsearchlite1'
+		 data-id="1"
+		 data-instance="1"
+		 class="asl_w asl_m asl_m_1">
+		<div class="probox">
+
+	
+	<div class='promagnifier'>
+				<div class='innericon'>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22" height="22" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+					<path d="M460.355,421.59L353.844,315.078c20.041-27.553,31.885-61.437,31.885-98.037
+						C385.729,124.934,310.793,50,218.686,50C126.58,50,51.645,124.934,51.645,217.041c0,92.106,74.936,167.041,167.041,167.041
+						c34.912,0,67.352-10.773,94.184-29.158L419.945,462L460.355,421.59z M100.631,217.041c0-65.096,52.959-118.056,118.055-118.056
+						c65.098,0,118.057,52.959,118.057,118.056c0,65.096-52.959,118.056-118.057,118.056C153.59,335.097,100.631,282.137,100.631,217.041
+						z"/>
+				</svg>
+		</div>
+	</div>
+
+	
+	
+	<div class='prosettings' style='display:none;' data-opened=0>
+				<div class='innericon'>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22" height="22" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+					<polygon transform = "rotate(90 256 256)" points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "/>
+				</svg>
+		</div>
+	</div>
+
+	
+	
+	<div class='proinput'>
+		<form autocomplete="off" aria-label='Ajax search form'>
+			<input aria-label='Search input' type='search' class='orig' name='phrase' placeholder='Søk her' value='' autocomplete="off"/>
+			<input aria-label='Autocomplete input, do not use this' type='text' class='autocomplete' name='phrase' value='' autocomplete="off"/>
+			<input type='submit' value="Start search" style='width:0; height: 0; visibility: hidden;'>
+		</form>
+	</div>
+
+	
+	
+	<div class='proloading'>
+
+		<div class="asl_loader"><div class="asl_loader-inner asl_simple-circle"></div></div>
+
+			</div>
+
+			<div class='proclose'>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+				 y="0px"
+				 width="12" height="12" viewBox="0 0 512 512" enable-background="new 0 0 512 512"
+				 xml:space="preserve">
+				<polygon points="438.393,374.595 319.757,255.977 438.378,137.348 374.595,73.607 255.995,192.225 137.375,73.622 73.607,137.352 192.246,255.983 73.622,374.625 137.352,438.393 256.002,319.734 374.652,438.378 "/>
+			</svg>
+		</div>
+	
+	
+</div>	</div>
+	<div class='asl_data_container' style="display:none !important;">
+		<div class="asl_init_data wpdreams_asl_data_ct" style="display:none !important;" id="asl_init_id_1" data-asldata="ew0KCSJob21ldXJsIjogImh0dHBzOi8vZmFnZm9say5uZXQvIiwNCgkicmVzdWx0c3R5cGUiOiAidmVydGljYWwiLA0KCSJyZXN1bHRzcG9zaXRpb24iOiAiaG92ZXIiLA0KCSJpdGVtc2NvdW50IjogNCwNCgkiY2hhcmNvdW50IjogIDAsDQoJImhpZ2hsaWdodCI6IDEsDQoJImhpZ2hsaWdodHdob2xld29yZHMiOiAxLA0KCSJzaW5nbGVIaWdobGlnaHQiOiAxLA0KCSJzY3JvbGxUb1Jlc3VsdHMiOiB7DQoJCSJlbmFibGVkIjogMCwNCgkJIm9mZnNldCI6IDANCgl9LA0KCSJyZXN1bHRhcmVhY2xpY2thYmxlIjogMSwNCgkiYXV0b2NvbXBsZXRlIjogew0KCQkiZW5hYmxlZCIgOiAxLA0KCQkibGFuZyIgOiAiZW4iLA0KCQkidHJpZ2dlcl9jaGFyY291bnQiIDogMA0KCX0sDQoJIm1vYmlsZSI6IHsNCgkJIm1lbnVfc2VsZWN0b3IiOiAiI21lbnUtdG9nZ2xlIg0KCX0sDQoJInRyaWdnZXIiOiB7DQoJCSJjbGljayI6ICJyZXN1bHRzX3BhZ2UiLA0KCQkiY2xpY2tfbG9jYXRpb24iOiAic2FtZSIsDQoJCSJyZXR1cm4iOiAicmVzdWx0c19wYWdlIiwNCgkJInJldHVybl9sb2NhdGlvbiI6ICJzYW1lIiwNCgkJImZhY2V0IjogMSwNCgkJInR5cGUiOiAxLA0KCQkicmVkaXJlY3RfdXJsIjogIj9zPXtwaHJhc2V9IiwNCgkJImRlbGF5IjogMzAwDQoJfSwNCiAgICAiYW5pbWF0aW9ucyI6IHsNCiAgICAgICAgInBjIjogew0KICAgICAgICAgICAgInNldHRpbmdzIjogew0KICAgICAgICAgICAgICAgICJhbmltIiA6ICJmYWRlZHJvcCIsDQogICAgICAgICAgICAgICAgImR1ciIgIDogMzAwDQogICAgICAgICAgICB9LA0KICAgICAgICAgICAgInJlc3VsdHMiIDogew0KCQkJCSJhbmltIiA6ICJmYWRlZHJvcCIsDQoJCQkJImR1ciIgIDogMzAwDQogICAgICAgICAgICB9LA0KICAgICAgICAgICAgIml0ZW1zIiA6ICJ2b2lkYW5pbSINCiAgICAgICAgfSwNCiAgICAgICAgIm1vYiI6IHsNCiAgICAgICAgICAgICJzZXR0aW5ncyI6IHsNCiAgICAgICAgICAgICAgICAiYW5pbSIgOiAiZmFkZWRyb3AiLA0KICAgICAgICAgICAgICAgICJkdXIiICA6IDMwMA0KICAgICAgICAgICAgfSwNCiAgICAgICAgICAgICJyZXN1bHRzIiA6IHsNCgkJCQkiYW5pbSIgOiAiZmFkZWRyb3AiLA0KCQkJCSJkdXIiICA6IDMwMA0KICAgICAgICAgICAgfSwNCiAgICAgICAgICAgICJpdGVtcyIgOiAidm9pZGFuaW0iDQogICAgICAgIH0NCiAgICB9LA0KICAgICJyZXNQYWdlIjogew0KICAgICAgICAidXNlQWpheCI6IDAsDQogICAgICAgICJzZWxlY3RvciI6ICIjbWFpbiIsDQogICAgICAgICJ0cmlnZ2VyX3R5cGUiOiAxLA0KICAgICAgICAidHJpZ2dlcl9mYWNldCI6IDEsDQogICAgICAgICJ0cmlnZ2VyX21hZ25pZmllciI6IDAsDQogICAgICAgICJ0cmlnZ2VyX3JldHVybiI6IDAgICAgfSwNCiAgICAicmVzdWx0cyI6IHsNCiAgICAgICAgIndpZHRoIjogImF1dG8iLA0KICAgICAgICAid2lkdGhfdGFibGV0IjogImF1dG8iLA0KICAgICAgICAid2lkdGhfcGhvbmUiOiAiYXV0byINCiAgICB9LA0KCSJzZXR0aW5nc2ltYWdlcG9zIjogInJpZ2h0IiwNCgkiY2xvc2VPbkRvY0NsaWNrIjogMSwNCgkib3ZlcnJpZGV3cGRlZmF1bHQiOiAwLA0KCSJvdmVycmlkZV9tZXRob2QiOiAiZ2V0Ig0KfQ0K"></div>	<div id="asl_hidden_data">
+		<svg style="position:absolute" height="0" width="0">
+			<filter id="aslblur">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+			</filter>
+		</svg>
+		<svg style="position:absolute" height="0" width="0">
+			<filter id="no_aslblur"></filter>
+		</svg>
+	</div>
+	</div>
+
+	<div id='ajaxsearchliteres1' class='vertical wpdreams_asl_results asl_w asl_r asl_r_1'>
+
+	
+	<div class="results">
+
+		
+		<div class="resdrg">
+		</div>
+
+		
+	</div>
+
+	
+					<p class='showmore'>
+			<a>Neste</a>
+		</p>
+			
+</div>
+
+	<div id='__original__ajaxsearchlitesettings1'
+		 data-id="1"
+		 class="searchsettings wpdreams_asl_settings asl_w asl_s asl_s_1">
+		<form name='options' autocomplete='off'>
+
+	
+	
+	<input type="hidden" name="filters_changed" style="display:none;" value="0">
+	<input type="hidden" name="filters_initial" style="display:none;" value="1">
+
+	<div class="asl_option_inner hiddend">
+		<input type='hidden' name='qtranslate_lang' id='qtranslate_lang1'
+			   value='0'/>
+	</div>
+
+	
+	
+	<fieldset class="asl_sett_scroll">
+		<legend style="display: none;">Generic selectors</legend>
+		<div class="asl_option">
+			<div class="asl_option_inner">
+				<input type="checkbox" value="exact" id="set_exactonly1"
+					   title="Exact matches only"
+					   name="asl_gen[]" />
+				<label for="set_exactonly1">Exact matches only</label>
+			</div>
+			<div class="asl_option_label">
+				Exact matches only			</div>
+		</div>
+		<div class="asl_option">
+			<div class="asl_option_inner">
+				<input type="checkbox" value="title" id="set_intitle1"
+					   title="Search in title"
+					   name="asl_gen[]"  checked="checked"/>
+				<label for="set_intitle1">Search in title</label>
+			</div>
+			<div class="asl_option_label">
+				Search in title			</div>
+		</div>
+		<div class="asl_option">
+			<div class="asl_option_inner">
+				<input type="checkbox" value="content" id="set_incontent1"
+					   title="Search in content"
+					   name="asl_gen[]"  checked="checked"/>
+				<label for="set_incontent1">Search in content</label>
+			</div>
+			<div class="asl_option_label">
+				Search in content			</div>
+		</div>
+		<div class="asl_option_inner hiddend">
+			<input type="checkbox" value="excerpt" id="set_inexcerpt1"
+				   title="Search in excerpt"
+				   name="asl_gen[]"  checked="checked"/>
+			<label for="set_inexcerpt1">Search in excerpt</label>
+		</div>
+	</fieldset>
+	<fieldset class="asl_sett_scroll">
+		<legend style="display: none;">Post Type Selectors</legend>
+					<div class="asl_option_inner hiddend">
+				<input type="checkbox" value="post"
+					   id="1customset_11"
+					   title="Hidden option, ignore please"
+					   name="customset[]" checked="checked"/>
+				<label for="1customset_11">Hidden</label>
+			</div>
+			<div class="asl_option_label hiddend"></div>
+
+						<div class="asl_option_inner hiddend">
+				<input type="checkbox" value="page"
+					   id="1customset_12"
+					   title="Hidden option, ignore please"
+					   name="customset[]" checked="checked"/>
+				<label for="1customset_12">Hidden</label>
+			</div>
+			<div class="asl_option_label hiddend"></div>
+
+				</fieldset>
+	</form>
+	</div>
+</div>
+            </div>
+        </div>
+            </div>
+                            <div class="g-grid">                        
+
+        <div class="g-block size-100 nomarginall nopaddingall">
+             <div class="g-content">
+                                    <div id="tag_cloud--2" class="widget widget_tag_cloud"><h3 class="widgettitle g-title">Stikkord</h3><div class="tagcloud"><a href="../tag/klimaskall/index.html" class="tag-cloud-link tag-link-16 tag-link-position-1" style="font-size: 0.8rem;" aria-label="klimaskall (1 element)">klimaskall</a>
+<a href="../tag/yttervegg/index.html" class="tag-cloud-link tag-link-15 tag-link-position-2" style="font-size: 0.8rem;" aria-label="yttervegg (1 element)">yttervegg</a>
+<a href="../tag/isolering/index.html" class="tag-cloud-link tag-link-14 tag-link-position-3" style="font-size: 0.8rem;" aria-label="isolering (1 element)">isolering</a></div>
+</div>
+            
+        </div>
+        </div>
+            </div>
+            
+    </section>
+                
+                                
+    
+    
+                <section id="g-container-footer" class="g-wrapper">
+                            <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <footer id="g-footer" class="section-horizontal-paddings section-vertical-paddings medpaddingbottom">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="simplemenu-8485-particle" class="g-content g-particle">            <div class="g-simplemenu-particle ">
+    
+        <div class="g-simplemenu-container">
+        <h6>Sider</h6>
+        <ul class="g-simplemenu">
+                        <li>
+                                <a target="_self" href="../blog/index.html" title="Blogg">Blogg</a>
+            </li>
+                        <li>
+                                <a target="_self" href="../index.html@p=206.html" title="Om oss">Om oss</a>
+            </li>
+                        <li>
+                                <a target="_self" href="../index.html@p=208.html" title="Kontakt oss">Kontakt oss</a>
+            </li>
+                        <li>
+                                <a target="_self" href="../index.html@p=210.html" title="Finn Fagfolk">Finn Fagfolk</a>
+            </li>
+                        <li>
+                                <a target="_self" href="../index.html@p=212.html" title="Profiler din bedrift">Profiler din bedrift</a>
+            </li>
+                    </ul>
+    </div>
+    <div class="g-simplemenu-container">
+        <h6>Følg oss</h6>
+        <ul class="g-simplemenu">
+                        <li>
+                                <a target="_blank" href="https://www.facebook.com/Fagfolk-466943003757795" title="Facebook">Facebook</a>
+            </li>
+                        <li>
+                                <a target="_blank" href="../index.html@p=246.html#" title="LinkedIn">LinkedIn</a>
+            </li>
+                    </ul>
+    </div>
+    <div class="g-simplemenu-container">
+        <h6>Kontakt</h6>
+        <ul class="g-simplemenu">
+                        <li>
+                                <a target="_self" href="mailto:hei@fagfolk.net" title="hei@fagfolk.net">hei@fagfolk.net</a>
+            </li>
+                        <li>
+                                <a target="_self" href="tel:+4799038002" title="+47 990 38 002">+47 990 38 002</a>
+            </li>
+                    </ul>
+    </div>
+
+</div>
+            </div>
+        </div>
+            </div>
+            
+    </footer>
+                                                        
+                <section id="g-copyright" class="section-horizontal-paddings">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100 center">
+             <div id="copyright-8832-particle" class="g-content g-particle">            &copy;
+        2022
+    websidene er kopibeskyttet Fagfolkportalen AS. Bilder er kopibeskyttet <a href="https://pexels.com">Pexels.com</a>.
+            </div>
+        </div>
+            </div>
+                            <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="particlesjs-6466-particle" class="g-content g-particle">            <div id="particlesjs-6466" data-particlesjs-id="particlesjs-6466" data-particlesjs-mode="section" data-particlesjs-path="https://fagfolk.net/wp-content/themes/rt_akuatik/json/particlejs/preset1.json"  class="g-particlesjs"></div>
+            </div>
+        </div>
+            </div>
+            
+    </section>
+        </div>
+            </div>
+    
+    </section>
+    
+            
+                        
+
+        </div>
+                    
+
+                    <script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='../wp-includes/js/dist/vendor/regenerator-runtime.min.js@ver=0.13.7' id='regenerator-runtime-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='../wp-includes/js/dist/vendor/wp-polyfill.min.js@ver=3.15.0' id='wp-polyfill-js'></script>
+<script type='text/javascript' id='contact-form-7-js-extra'>
+/* <![CDATA[ */
+var wpcf7 = {"api":{"root":"https:\/\/fagfolk.net\/wp-json\/","namespace":"contact-form-7\/v1"},"cached":"1"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/contact-form-7/includes/js/index.js@ver=1643145562' id='contact-form-7-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/fagfolk.net","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/external/simplebar.js@ver=1653289329' id='wd-asl-scroll-simple-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='wd-asl-ajaxsearchlite-js-before'>
+window.ASL = typeof window.ASL !== 'undefined' ? window.ASL : {}; window.ASL.wp_rocket_exception = "DOMContentLoaded"; window.ASL.ajaxurl = "https:\/\/fagfolk.net\/wp-admin\/admin-ajax.php"; window.ASL.backend_ajaxurl = "https:\/\/fagfolk.net\/wp-admin\/admin-ajax.php"; window.ASL.js_scope = "jQuery"; window.ASL.asl_url = "https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/"; window.ASL.detect_ajax = 0; window.ASL.media_query = 4751; window.ASL.version = 4751; window.ASL.pageHTML = ""; window.ASL.additional_scripts = [{"handle":"wd-asl-scroll-simple","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/external\/simplebar.js","prereq":false},{"handle":"wd-asl-ajaxsearchlite","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/plugin\/optimized\/asl-prereq.js","prereq":[]},{"handle":"wd-asl-ajaxsearchlite-core","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/plugin\/optimized\/asl-core.js","prereq":[]},{"handle":"wd-asl-ajaxsearchlite-vertical","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/plugin\/optimized\/asl-results-vertical.js","prereq":["wd-asl-ajaxsearchlite"]},{"handle":"wd-asl-ajaxsearchlite-autocomplete","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/plugin\/optimized\/asl-autocomplete.js","prereq":["wd-asl-ajaxsearchlite"]},{"handle":"wd-asl-ajaxsearchlite-load","src":"https:\/\/fagfolk.net\/wp-content\/plugins\/ajax-search-lite\/js\/min\/plugin\/optimized\/asl-load.js","prereq":["wd-asl-ajaxsearchlite-autocomplete"]}]; window.ASL.script_async_load = false; window.ASL.scrollbar = true; window.ASL.css_async = false; window.ASL.js_retain_popstate = 0; window.ASL.highlight = {"enabled":true,"data":[{"selector":"#content","scroll":false,"scroll_offset":0,"whole":true}]}; window.ASL.fix_duplicates = 1; window.ASL.analytics = {"method":0,"tracking_id":"","string":"?ajax_search={asl_term}","event":{"focus":{"active":1,"action":"focus","category":"ASL","label":"Input focus","value":"1"},"search_start":{"active":0,"action":"search_start","category":"ASL","label":"Phrase: {phrase}","value":"1"},"search_end":{"active":1,"action":"search_end","category":"ASL","label":"{phrase} | {results_count}","value":"1"},"magnifier":{"active":1,"action":"magnifier","category":"ASL","label":"Magnifier clicked","value":"1"},"return":{"active":1,"action":"return","category":"ASL","label":"Return button pressed","value":"1"},"facet_change":{"active":0,"action":"facet_change","category":"ASL","label":"{option_label} | {option_value}","value":"1"},"result_click":{"active":1,"action":"result_click","category":"ASL","label":"{result_title} | {result_url}","value":"1"}}};
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-prereq.js@ver=1653289329' id='wd-asl-ajaxsearchlite-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-core.js@ver=1653289329' id='wd-asl-ajaxsearchlite-core-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-results-vertical.js@ver=1653289329' id='wd-asl-ajaxsearchlite-vertical-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-autocomplete.js@ver=1653289329' id='wd-asl-ajaxsearchlite-autocomplete-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-load.js@ver=1653289329' id='wd-asl-ajaxsearchlite-load-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/ajax-search-lite/js/min/plugin/optimized/asl-wrapper.js@ver=1653289329' id='wd-asl-ajaxsearchlite-wrapper-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='../wp-includes/js/jquery/ui/core.min.js@ver=1.12.1' id='jquery-ui-core-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/themes/rt_akuatik/js/particles.js@ver=1643145563' id='particles-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/themes/rt_akuatik/js/particlesjs.init.js@ver=1643145563' id='particlesjs.init-js' defer></script>
+<script type='text/javascript' src='../wp-content/plugins/wp-smushit/app/assets/js/smush-lazy-load.min.js@ver=3.9.11' id='smush-lazy-load-js' defer></script>
+<script type='text/javascript' src='../wp-includes/js/wp-embed.min.js@ver=5.8.4' id='wp-embed-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='../wp-content/cache/min/1/wp-content/plugins/gantry5/assets/js/main.js@ver=1643145563' id='main-js' defer></script>
+
+
+    
+
+        
+    <script type="rocketlazyloadscript">"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&"remove"in elem&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" /><link rel='stylesheet' id='wp-block-library-css'  href='../wp-includes/css/dist/block-library/style.min.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css@ver=5.5.6.1.css' type='text/css' media='all' /><link rel='stylesheet' id='wpdreams-asl-basic-css'  href='../wp-content/plugins/ajax-search-lite/css/style.basic.css@ver=4.10.css' type='text/css' media='all' /><link rel='stylesheet' id='wpdreams-ajaxsearchlite-css'  href='../wp-content/plugins/ajax-search-lite/css/style-curvy-red.css@ver=4.10.css' type='text/css' media='all' /><link rel='stylesheet' id='nucleus-css'  href='../wp-content/plugins/gantry5/engines/nucleus/css-compiled/nucleus.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='akuatik_bloggartikler-css'  href='../wp-content/themes/rt_akuatik/custom/css-compiled/akuatik_bloggartikler.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='wordpress-css'  href='../wp-content/plugins/gantry5/engines/nucleus/css-compiled/wordpress.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='style-css'  href='../wp-content/themes/rt_akuatik/style.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='font-awesome5-all.min-css'  href='../wp-content/plugins/gantry5/assets/css/font-awesome5-all.min.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='font-awesome5-shim.min-css'  href='../wp-content/plugins/gantry5/assets/css/font-awesome5-shim.min.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='akuatik-wordpress_bloggartikler-css'  href='../wp-content/themes/rt_akuatik/custom/css-compiled/akuatik-wordpress_bloggartikler.css@ver=5.8.4.css' type='text/css' media='all' /><link rel='stylesheet' id='custom_bloggartikler-css'  href='../wp-content/themes/rt_akuatik/custom/css-compiled/custom_bloggartikler.css@ver=5.8.4.css' type='text/css' media='all' /></noscript></body>
+</html>
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1653739498 -->
