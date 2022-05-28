@@ -9,7 +9,18 @@
             GitHub
         </a>
     </h3>
+    <p>Application supporting the acquisition of new customers</p>
+        <br>
+        <p>Technologies and tools:</p>
+    <p>
+        <img src="img/html5.svg" width="40" height="40" alt="html"/>
+        <img src="img/css3.svg" width="40" height="40" alt="css"/>
+        <img src="img/js.svg" width="40" height="40" alt="javascript"/>
+        <img src="img/phpstorm.svg" width="40" height="40" alt="vsc"/>
+        <img src="img/md.svg" width="40" height="40" alt="mark down"/>
+    </p>
 </div>
+<br>
 
 ## About project
 
