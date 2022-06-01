@@ -16,8 +16,10 @@
         <img src="img/html5.svg" width="40" height="40" alt="html"/>
         <img src="img/css3.svg" width="40" height="40" alt="css"/>
         <img src="img/js.svg" width="40" height="40" alt="javascript"/>
-        <img src="img/phpstorm.svg" width="40" height="40" alt="vsc"/>
-        <img src="img/md.svg" width="40" height="40" alt="mark down"/>
+        <img src="img/git.svg" width="40" height="40" alt="git"/>
+        <img src="img/github.svg" width="40" height="40" alt="github"/>
+        <img src="img/phpstorm.svg" width="40" height="40" alt="phpstorm"/>
+        <img src="img/md.svg" width="40" height="40" alt="markdown"/>
     </p>
 </div>
 <br>
@@ -27,6 +29,16 @@
 The task I have undertaken is to create a module that opens in a modal window on any page where its code will be inserted.
 
 The biggest challenge is to create a code that is 100% transparent for the systems in which the module will be used so that there is no undesirable interference between the module and the generated page.
+
+### Test 1 - simple test page
+
+![test1-1](img/test1-1.jpeg)
+![test1-2](img/test1-2.jpeg)
+
+### Test 2 - FagFolk.net page
+
+![test2-1](img/test2-1.jpeg)
+![test2-2](img/test2-2.jpeg)
 
 ## About me
 
