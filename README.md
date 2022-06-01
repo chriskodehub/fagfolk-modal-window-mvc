@@ -30,6 +30,8 @@ The task I have undertaken is to create a module that opens in a modal window on
 
 The biggest challenge is to create a code that is 100% transparent for the systems in which the module will be used so that there is no undesirable interference between the module and the generated page.
 
+![tests](img/tests.png)
+
 ### Test 1 - simple test page
 
 ![test1-1](img/test1-1.jpeg)
