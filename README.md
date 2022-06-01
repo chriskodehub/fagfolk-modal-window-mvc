@@ -10,12 +10,15 @@
         </a>
     </h3>
     <p>Application supporting the acquisition of new customers</p>
+    <p>Project under development</p>
         <br>
         <p>Technologies and tools:</p>
     <p>
         <img src="img/html5.svg" width="40" height="40" alt="html"/>
         <img src="img/css3.svg" width="40" height="40" alt="css"/>
         <img src="img/js.svg" width="40" height="40" alt="javascript"/>
+        <img src="img/firebase.svg" width="40" height="40" alt="firebase"/>
+        <img src="img/angular.svg" width="40" height="40" alt="angular"/>
         <img src="img/git.svg" width="40" height="40" alt="git"/>
         <img src="img/github.svg" width="40" height="40" alt="github"/>
         <img src="img/phpstorm.svg" width="40" height="40" alt="phpstorm"/>
@@ -29,6 +32,8 @@
 The task I have undertaken is to create a module that opens in a modal window on any page where its code will be inserted.
 
 The biggest challenge is to create a code that is 100% transparent for the systems in which the module will be used so that there is no undesirable interference between the module and the generated page.
+
+The module is compatible with the rest of the system and connects to the Firebase database to register new users and register projects for construction work.
 
 ![tests](img/tests.png)
 
